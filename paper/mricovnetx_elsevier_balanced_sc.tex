@@ -1,0 +1,1462 @@
+\documentclass[a4paper,fleqn]{cas-sc}
+        \usepackage[numbers,sort&compress]{natbib}
+        \usepackage{graphicx}
+        \usepackage{multirow}
+        \usepackage{booktabs}
+        \usepackage{amsmath,amssymb,amsfonts}
+        \usepackage{algorithm}
+        \usepackage{algorithmicx}
+        \usepackage{algpseudocode}
+        \usepackage{listings}
+        \usepackage{subcaption}
+        \usepackage{url}
+        \usepackage{float}
+        \usepackage[section]{placeins}
+        \def\UrlBreaks{\do\/\do-\do\_\do\=\do\&\do\?\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z\do\0\do\1\do\2\do\3\do\4\do\5\do\6\do\7\do\8\do\9}
+
+        \begin{document}
+        \let\WriteBookmarks\relax
+        \def\floatpagepagefraction{1}
+        \def\textpagefraction{.001}
+        \setcounter{topnumber}{5}
+        \setcounter{bottomnumber}{5}
+        \setcounter{totalnumber}{10}
+        \renewcommand{\topfraction}{0.95}
+        \renewcommand{\bottomfraction}{0.95}
+        \renewcommand{\textfraction}{0.03}
+        \renewcommand{\floatpagefraction}{0.9}
+        \setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\floatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{10pt plus 2pt minus 2pt}
+\setlength{\dblfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{2pt}
+\setlength{\parskip}{0pt}
+
+        \shorttitle{MRICovNetX}
+        \shortauthors{Islam et al.}
+
+        \title[mode=title]{MRICovNetX: A Multi-Format Dual-Branch Deep Neural Framework with Explainable AI for Brain Tumor Classification Using Heterogeneous MRI Data}
+
+        \author[1]{Md.\ Fakrul Islam}
+        \author[1]{Md Shihab Uddin}
+        \author[1]{Sajib Chandra Paul}
+        \author[1]{Md Siyam Saqlain Ovi}
+        \author[2]{Muhammad Nazrul Islam}
+        \author[1]{Muhammad Abul Hasan}
+        \author[3,4]{Mohammad Ali Moni}
+        \author[5]{M. M. Hafizur Rahman}
+        \author[6]{Yasushi Inoguchi}
+        \author[7]{Faiz Al Faisal}
+
+        \affiliation[1]{organization={Green University of Bangladesh},
+                        city={Narayanganj},
+                        postcode={1461},
+                        country={Bangladesh}}
+        \affiliation[2]{organization={Military Inst. of Science and Tech.},
+                        city={Dhaka},
+                        postcode={1216},
+                        country={Bangladesh}}
+        \affiliation[3]{organization={Charles Stuart University},
+                        state={Victoria},
+                        city={Melbourne},
+                        postcode={3000},
+                        country={Australia}}
+        \affiliation[4]{organization={The University of Queensland},
+                        state={Queensland},
+                        city={Melbourne},
+                        postcode={3000},
+                        country={Australia}}
+        \affiliation[5]{organization={King Faisal University},
+                        city={Al Ahsa},
+                        postcode={31982},
+                        country={Saudi Arabia}}
+        \affiliation[6]{organization={Japan Advanced Institute of Science and Technology},
+                        state={Ishikawa},
+                        postcode={923-1292},
+                        country={Japan}}
+        \affiliation[7]{organization={American International University-Bangladesh},
+                        city={Dhaka},
+                        postcode={1229},
+                        country={Bangladesh}}
+
+        \begin{abstract}
+        Accurate classification of brain tumors is critical for guiding clinical decisions and improving patient outcomes. This study introduces MRICovNetX, a multi-format dual-branch deep learning framework designed to handle heterogeneous MRI data, specifically .mat and .jpg types, for automated brain tumor classification. The framework incorporates two complementary architectures: CovBI-GRU, a hybrid Conv1D--Bidirectional GRU network for structured volumetric .mat data, and CovNet22, a lightweight Conv2D-based CNN optimized for standard RGB image inputs. MRICovNetX was rigorously validated across four publicly available benchmark datasets encompassing a total of 19,407 MRI images. Dataset-1 includes three tumor types (glioma, meningioma, and pituitary), while Dataset-2 and Dataset-3 include four categories (glioma, meningioma, pituitary, and no tumor), and Dataset-4 contains three tumor types (Brain\_Glioma, Brain\_Menin, and Brain Tumor). Under strict patient-level data splitting to prevent data leakage, CovBI-GRU achieved 82.73 $\pm$ 0.51\% classification accuracy on Dataset-1, while CovNet22 attained 93.87 $\pm$ 0.93\% on Dataset-2, 98.83 $\pm$ 0.04\% on Dataset-3, and 98.02 $\pm$ 0.43\% on Dataset-4 (mean $\pm$ SD across three independent random seeds). Comprehensive cross-dataset deduplication analysis, modern CNN and Vision Transformer baseline comparisons (ResNet-50, EfficientNet-B0, MobileNetV2, DenseNet-121, VGG-16, Swin-Tiny, ViT-B/16), and component ablation studies with statistical rigor validate the framework's effectiveness. To enhance clinical interpretability, we integrate Explainable AI (XAI) techniques including Grad-CAM++, hemisphere-gated deep-core focusing, and LIME superpixel explanations, with quantitative evaluation using Energy-Based Pointing Game and IoU metrics against ground-truth tumor masks. The lightweight design (1.45M parameters for CovNet22) enables real-time inference with processing times of approximately 12--18 milliseconds per image on consumer-grade GPUs, making MRICovNetX a promising candidate for computer-aided diagnostic (CAD) decision support in resource-constrained clinical settings.
+        \end{abstract}
+
+        \begin{keywords}
+        Magnetic Resonance Imaging \sep Brain Tumor Classification \sep Convolutional Neural Networks \sep Bidirectional Gated Recurrent Unit \sep Explainable AI \sep Grad-CAM \sep Deep Learning
+        \end{keywords}
+
+        \maketitle
+\section{Introduction}\label{sec1}
+
+Brain tumors are a serious and potentially life-threatening condition that affects individuals across the globe. These tumors result from abnormal cell growth within the brain, which can exert pressure on surrounding tissues due to the rigid, confined structure of the skull. This pressure can disrupt critical neurological functions, leading to symptoms such as persistent headaches, seizures, nausea, vomiting, and visual or speech impairments. These manifestations significantly impact patients’ quality of life, impeding daily activities and overall well-being. In severe cases, neurological complications such as motor dysfunction, cognitive deficits, and personality changes may arise. Early and accurate classification of brain tumors is therefore vital for determining effective treatment strategies and improving survival outcomes. Failure to diagnose and classify tumors accurately may result in delayed treatment, progression of the disease, and even death \cite{R1}.
+
+Brain tumors are typically categorized into two groups based on their origin and anatomical location: \textit{primary} and \textit{secondary}. Primary brain tumors originate in the brain and account for approximately 70\% of all cases, whereas secondary tumors metastasize from other parts of the body and comprise the remaining 30\% \cite{R2}. This study focuses solely on primary brain tumors \cite{R54, R55}.
+
+According to the International Association of Cancer Registries, brain tumors impose a substantial global burden, with high diagnosis and mortality rates reported in countries such as India, the United Kingdom, and the United States \cite{R4, R5, R56, R57}.
+
+Among primary brain tumors, \textit{gliomas} are associated with the highest morbidity and mortality rates \cite{R1}. Gliomas arise from glial cells and are further classified into low-grade (LG) and high-grade (HG) categories based on their malignancy \cite{R8}. Another common tumor type is the \textit{meningioma}, which forms in the protective membranes (meninges) surrounding the brain and spinal cord. Although often considered less aggressive due to its slow growth, meningioma can still lead to significant clinical complications \cite{R9}. \textit{Pituitary tumors}, located at the base of the brain in the pituitary gland, are generally benign but can cause hormonal imbalances and vision problems if untreated \cite{R10, R1}. Timely and accurate classification of these tumor types aids effective intervention \cite{R9}.
+
+Recent advancements in artificial intelligence (AI), particularly in computer vision and medical imaging, have paved the way for more accurate and efficient brain tumor classification. The integration of AI into medical diagnostics has led to the development of computer-aided diagnosis (CAD) systems. Traditional machine learning (ML) techniques, such as artificial neural networks (ANNs), support vector machines (SVMs), and early convolutional neural networks (CNNs), have shown promise for tumor classification tasks \cite{R11, R12, R13, R14, R15}. These methods often rely on manual feature extraction and selection to identify relevant characteristics within MRI images \cite{R16, R17}. However, this process can be prone to information loss and suboptimal feature representation \cite{R18}.
+
+In contrast, deep learning (DL) models, particularly CNNs, automatically learn and extract discriminative features directly from raw image data \cite{R19}. This significantly enhances model performance and reduces dependence on handcrafted features \cite{R20}. CNNs utilize multiple convolutional layers to capture spatial hierarchies and patterns within medical images \cite{R21}, and have demonstrated effectiveness even in scenarios with limited datasets \cite{R22}.
+
+Despite the promise of deep learning in neuro-oncology, existing automated diagnostic pipelines face two prevalent clinical limitations. First, most published architectures enforce a rigid, single-format ingestion pipeline---either accepting only 8-bit RGB snapshots (\texttt{.jpg}/\texttt{.png}) or requiring complex, memory-intensive volumetric reconstructions. However, clinical radiological archives routinely store scans in heterogeneous formats ranging from raw numerical matrix files (\texttt{.mat}/HDF5) preserving full 16-bit radiometric dynamic ranges to lightweight DICOM/JPEG screen captures. Compelling high-dynamic-range arrays into standard 8-bit image formats discards subtle tissue contrast, while feeding 2D image snapshots into heavy 3D architectures causes severe parameter bloat. Second, most contemporary high-performing models (such as deep residual networks or vision transformers) contain tens of millions of trainable parameters, rendering them unsuitable for real-time inference on resource-constrained point-of-care edge hardware. There is an urgent clinical need for a flexible, format-aware diagnostic framework that decouples structured numerical slice modeling from standard image classification while maintaining an ultra-compact parameter footprint and transparent visual explainability.
+
+This study introduces \textbf{MRICovNetX}, a novel deep learning framework for classifying brain tumors into four categories: \textit{glioma}, \textit{meningioma}, \textit{pituitary tumor}, and \textit{no tumor}. The framework comprises two specialized models:
+
+\begin{itemize}
+    \item \textbf{CovBI-GRU}: A hybrid model that combines 1D CNN layers with bidirectional gated recurrent units (Bi-GRU), optimized for processing MRI data in \texttt{.mat} format. It utilizes 708 MRI slices of meningioma, 1426 of glioma, and 930 of pituitary tumors.
+    
+    \item \textbf{CovNet22}: A CNN-based architecture designed for \texttt{.jpg} image datasets. This model is evaluated using three datasets: Dataset-2 (3,264 images), Dataset-3 (7,023 images), and Dataset-4 (6,056 images). The architecture includes five Conv2D layers, a flattened layer, two dense layers with softmax activation, and dropout for regularization.
+\end{itemize}
+
+MRICovNetX leverages variable kernel sizes in CovBI-GRU and consistent kernel sizes in CovNet22 to extract complex and robust features from MRI images. Experimental results show that under strict patient-level splitting to prevent anatomical data leakage, CovBI-GRU achieves 82.73 $\pm$ 0.51\% classification accuracy on Dataset-1 (compared to 98.03\% under image-level random split), while CovNet22 attains 93.87 $\pm$ 0.93\% on Dataset-2, 98.83 $\pm$ 0.04\% on Dataset-3, and 98.02 $\pm$ 0.43\% on Dataset-4 across three independent random seeds. These results outperform many existing methods and demonstrate the robustness and effectiveness of MRICovNetX in real-world medical imaging scenarios. While this study focuses on glioma, meningioma, and pituitary tumor classification, Dataset-2 and Dataset-3 also include a no-tumor class; future work will aim to expand classification capabilities to additional tumor types.
+\begin{figure}[!htbp]
+\centering
+    \includegraphics[width=0.88\linewidth]{figs/mricovnetx_pipeline_diagram.pdf}
+    \caption{End-to-end pipeline of the MRICovNetX framework. The six-stage workflow comprises: (1) multi-source data acquisition from four public datasets, (2) format-specific preprocessing with normalization and augmentation, (3) model selection routing \texttt{.mat} data to CovBI-GRU and \texttt{.jpg} images to CovNet22, (4) deep feature extraction through convolutional and recurrent layers, (5) SoftMax-based multi-class classification, and (6) Grad-CAM++ explainability for clinical interpretability.}
+    \label{fig:mricovnetx_framework}
+\end{figure}
+
+
+\section{Related Works}\label{sec2}
+
+Over the past decade, numerous machine learning (ML) and deep learning (DL) techniques have been developed for classifying brain tumors using MRI data. This section reviews representative approaches organized by methodology.
+
+\subsection{CNN-Based Approaches}
+
+Convolutional Neural Networks (CNNs) have emerged as a dominant approach due to their ability to automatically learn spatial feature hierarchies without manual extraction. Sultan et al. \cite{R2} proposed a 16-layer CNN model for classifying brain tumors into three categories: meningioma, glioma, and pituitary, achieving 96.13\% accuracy. Ertosun et al. \cite{R23} introduced a hybrid CNN model to classify glioma tumors by grade, achieving 96.0\% accuracy for Grade II and 71.0\% for Grades III and IV. Anaraki et al. \cite{R24} employed CNN with Genetic Algorithms (GA), achieving 94.2\% for three-class classification.
+
+Khan et al. \cite{R25} proposed a 23-layer CNN architecture achieving up to 97.8\% accuracy, though it overfitted on smaller datasets. Milica et al. \cite{R26} developed a 22-layer CNN trained on 3,064 contrast-enhanced MRI images, achieving 96.56\% accuracy. Despite these advancements, CNN-based models often face challenges such as overfitting, high computational requirements, and limited generalizability.
+
+\subsection{Hybrid and Traditional ML Approaches}
+
+Beyond CNNs, a variety of ML and DL approaches have been proposed. Cheng et al. \cite{R27} explored traditional ML classifiers using intensity histograms, GLCM, and bag-of-words (BoW), achieving up to 91.28\%. Munira et al. \cite{R28} combined deep feature ensembles with RF, SVM, and KNN classifiers, with SVM achieving 94.95\%. Citak et al. \cite{R29} used multi-layer perceptrons and SVM achieving 93\% accuracy. Mohsen et al. \cite{R30} proposed a DWT-based model achieving 93.94\%.
+
+\subsection{Recurrent and Sequential Architectures}
+
+Recurrent architectures have gained traction for capturing sequential patterns in medical imaging. Ashley \cite{R33} employed a pre-trained Xception model combined with Bi-GRU, achieving 82\% accuracy. Gab Allah et al. \cite{R36} explored VGG19-based feature extraction with CNN, GRU, and Bi-GRU classifiers, where the Bi-GRU variant achieved 96.84\% accuracy. Despite their strengths, Bi-GRU models require substantial labeled training data and are computationally intensive.
+
+\subsection{Transformer and Lightweight Architectures}
+
+Recent advances in vision transformers have introduced new paradigms for medical image classification. Swin Transformer-based approaches have demonstrated competitive performance for brain tumor classification by leveraging hierarchical shifted-window attention mechanisms that capture both local and global spatial dependencies~\cite{R_SwinTumor2023}. Similarly, lightweight architectures with integrated explainability have been proposed to balance classification accuracy with computational efficiency for smart healthcare systems~\cite{R_EfficientXAI2024}. Deep learning-integrated frameworks combining feature extraction, segmentation, and survival prediction have further advanced multi-task MRI analysis~\cite{R_DeepMRIAnalysis2024}. Dual-stage frameworks utilizing multimodal MRI scans for brain tumor classification and localization have also shown promising results~\cite{R_DualStage2024}. Cloud-enabled hybrid CNN-Transformer architectures with attention mechanisms have demonstrated scalable performance for neurological disease staging~\cite{R_CloudCNNTransformer2024}.
+
+Data complexity-based evaluation methods have provided insights into model dependence on MRI image characteristics, informing architecture selection for brain tumor and neurological disease classification tasks~\cite{R_DataComplexity2024}.
+
+\begin{figure}[!htbp]
+  \includegraphics[width=0.9\linewidth]{figs/CovBi-Gru(New).jpg}
+  \caption{The proposed CovBI-GRU architecture designed for brain tumor classification using the Figshare dataset (\texttt{.mat} format).}
+  \label{fig:covbi-gru}
+\end{figure}
+
+\begin{figure}[!htbp] 
+  \includegraphics[width=0.9\linewidth]{figs/CovNet(New).jpg}
+  \caption{The CovNet22 architecture for brain tumor classification using \texttt{.jpg} images from Dataset-2, Dataset-3, and Dataset-4.}
+  \label{fig:covnet22_architecture}
+\end{figure}
+
+In summary, while CNNs, hybrid ML-DL, and transformer-based approaches have demonstrated strong performance in brain tumor classification, challenges such as overfitting, data imbalance, and limited interpretability remain. Additionally, most existing studies do not address classification across both structured (\texttt{.mat}) and image-based (\texttt{.jpg}) formats simultaneously. This study introduces MRICovNetX to address these gaps by integrating two complementary models---CovBI-GRU and CovNet22---capable of handling different data types while providing comprehensive explainable AI support.
+
+\section{Materials and Methodology}
+\label{sec3}
+
+This section provides a comprehensive overview of the data acquisition, preprocessing, model design, training procedures, and evaluation strategies used to develop the proposed MRICovNetX framework. The system architecture, illustrated in Figure~\ref{fig:mricovnetx_framework}, outlines a multi-stage pipeline that starts with image acquisition and labeling, followed by dataset preparation, preprocessing, model training, and performance evaluation. The MRICovNetX framework comprises two tailored neural network architectures—CovBI-GRU and CovNet22—designed to effectively handle structured \texttt{.mat} data and unstructured \texttt{.jpg} image data, respectively. The following subsections detail the datasets, data preparation techniques, model design, optimization, and generalization approaches.
+
+\subsection{Datasets}
+
+The experimental validation of MRICovNetX was conducted using four publicly available brain tumor MRI datasets. These datasets differ in format, resolution, class balance, and image modality, providing a robust benchmark for evaluating the proposed models under varying real-world constraints. Detailed statistics and class distributions across all four datasets are combined and presented in Table~\ref{tab:combined_datasets}.
+
+
+\begin{table}[!htbp]
+\centering
+\caption{Summary of Class Distributions and Formats Across All Four Datasets}
+\label{tab:combined_datasets}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllc}
+\toprule
+\textbf{Dataset} & \textbf{Format} & \textbf{Tumor Class} & \textbf{Samples} \\
+\midrule
+\multirow{4}{*}{Dataset-1 (Figshare) \cite{R38}} & \multirow{4}{*}{.mat} & Meningioma & 708 \\
+ & & Glioma & 1426 \\ 
+ & & Pituitary & 930 \\
+ & & \textbf{Total} & \textbf{3064} \\
+\midrule
+\multirow{5}{*}{Dataset-2 (MRI) \cite{R39}} & \multirow{5}{*}{.jpg} & Meningioma & 937 \\
+ & & Glioma & 926 \\
+ & & Pituitary & 901 \\
+ & & No Tumor & 500 \\
+ & & \textbf{Total} & \textbf{3264} \\
+\midrule
+\multirow{5}{*}{Dataset-3 (MRI Dataset) \cite{R40}} & \multirow{5}{*}{.jpg} & Meningioma & 1645 \\
+ & & Glioma & 1621 \\
+ & & Pituitary & 1757 \\
+ & & No Tumor & 2000 \\
+ & & \textbf{Total} & \textbf{7023} \\
+\midrule
+\multirow{4}{*}{Dataset-4 (Mendeley Bangladeshi MRI Data) \cite{R58}} & \multirow{4}{*}{.jpg} & Brain\_Glioma & 2004 \\
+ & & Brain\_Menin & 2004 \\
+ & & Brain Tumor & 2048 \\
+ & & \textbf{Total} & \textbf{6056} \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\textbf{Dataset-1 (Figshare)}~\cite{R38} comprises 3,064 T1-weighted contrast-enhanced MRI slices extracted from 233 patients. The dataset is stored in \texttt{.mat} format and includes three tumor types: meningioma, glioma, and pituitary tumor. Each sample corresponds to a 2D axial view of a brain MRI scan.
+
+\textbf{Dataset-2}~\cite{R39} consists of 3,264 MRI images in \texttt{.jpg} format, annotated into four categories: glioma, meningioma, pituitary tumor, and no tumor. This dataset, sourced from Kaggle, includes a balanced distribution of tumor and non-tumor images with diverse spatial orientations (axial, sagittal, and coronal).
+
+\textbf{Dataset-3}~\cite{R40} is an aggregated collection of 7,023 images from multiple publicly available datasets, including Figshare, SARTAJ, and Br35H~\cite{R42}. This larger and more diverse dataset includes the same four classes as Dataset-2. To enhance label integrity, samples with questionable labeling—particularly within the glioma class, were replaced or corrected using high-quality references from the Figshare repository.
+
+\textbf{Dataset-4 (Mendeley Bangladeshi Data)}~\cite{R58} is a specialized brain tumor MRI dataset sourced exclusively from real-world Bangladeshi patients. It comprises 6,056 T1-weighted MRI images in \texttt{.jpg} format, systematically categorized into three distinct classes: Brain\_Glioma (2,004), Brain\_Menin (2,004), and Brain Tumor (2,048). Each image in the dataset has been meticulously collected from various hospitals across Bangladesh, ensuring a diverse and representative sample, and images are uniformly resized to $512 \times 512$ pixels to facilitate compatibility. This dataset provides a near-balanced class distribution and serves as an additional benchmark to validate the generalizability of the CovNet22 model on unseen data from an independent source.
+
+\paragraph{Clinical Label Mapping and Sequence Characterization for Dataset-4}
+In the Mendeley repository, class folders are labeled as \texttt{Brain\_Glioma}, \texttt{Brain\_Menin}, and \texttt{Brain Tumor}. In consultation with clinical neuroradiologists and based on original dataset annotations~\cite{R58}, \texttt{Brain\_Glioma} corresponds to intra-axial Gliomas, \texttt{Brain\_Menin} corresponds to extra-axial Meningiomas, and \texttt{Brain Tumor} exclusively denotes benign Pituitary Adenomas originating from the sellar region. Images were acquired using 1.5 Tesla clinical MRI scanners with standard contrast-enhanced T1-weighted axial protocols across institutional diagnostic centers in Bangladesh under local clinical research compliance. This mapping establishes a consistent 3-tumor taxonomy with Dataset-1.
+
+All datasets contain images in different anatomical views and imaging conditions, making them suitable for testing model adaptability and robustness. The class distributions across all four datasets are visualized in Figure~\ref{fig:dataset12_distribution} (Dataset-1 and Dataset-2) and Figure~\ref{fig:dataset34_distribution} (Dataset-3 and Dataset-4), which vary in balance and sample sizes, making them suitable for comprehensive model evaluation.
+
+\subsection{Cross-Dataset Deduplication Analysis}
+\label{sec:dedup}
+
+To ensure experimental integrity, we performed a systematic cross-dataset deduplication analysis using 64-bit perceptual hashing (pHash) across all four datasets (19,407 images total). Table~\ref{tab:dedup} summarizes the pairwise overlap results.
+
+\begin{table}[!htbp]
+\centering
+\caption{Cross-Dataset Deduplication Analysis Using Perceptual Hashing}
+\label{tab:dedup}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l l c c c}
+\hline
+\textbf{Dataset A} & \textbf{Dataset B} & \textbf{Images A} & \textbf{Images B} & \textbf{Overlap (\%)} \\
+\hline\hline
+Dataset-1 (Figshare) & Dataset-2 (Kaggle) & 3,051 & 2,829 & \textbf{0.00} \\
+Dataset-1 (Figshare) & Dataset-3 (Nickparvar) & 3,051 & 5,910 & \textbf{0.00} \\
+Dataset-1 (Figshare) & Dataset-4 (Mendeley) & 3,051 & 6,012 & \textbf{0.00} \\
+Dataset-2 (Kaggle) & Dataset-3 (Nickparvar) & 2,829 & 5,910 & \textbf{75.01} \\
+Dataset-2 (Kaggle) & Dataset-4 (Mendeley) & 2,829 & 6,012 & \textbf{0.00} \\
+Dataset-3 (Nickparvar) & Dataset-4 (Mendeley) & 5,910 & 6,012 & \textbf{0.00} \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+The analysis reveals that Dataset-2 and Dataset-3 share 75.01\% of their images (2,122 images), which is historically consistent as Nickparvar et al.\ curated their benchmark by extending Bhuvaji's earlier Kaggle collection. Crucially, Dataset-1 (Figshare) and Dataset-4 (Mendeley) exhibit strictly zero overlap with any other dataset, confirming complete independence. Since each dataset is trained and evaluated within its own isolated partition, no cross-dataset data leakage occurred.
+
+\subsection{Patient-Level Data Splitting}
+\label{sec:patient_split}
+
+Dataset-1 (Figshare) provides patient identifiers (\texttt{cjdata/PID}) embedded within each \texttt{.mat} file, enabling patient-level stratification. We extracted unique patient IDs from all 3,064 slices, identifying 232 unique subjects. Using \texttt{GroupShuffleSplit} with an 80:20 ratio, we partitioned the data into 185 training patients (2,470 slices) and 47 testing patients (579 slices), ensuring \textbf{zero patient overlap} between partitions. Table~\ref{tab:patient_split} compares the two splitting protocols.
+
+\begin{table}[!htbp]
+\centering
+\caption{Effect of Patient-Level vs.\ Image-Level Splitting on Dataset-1}
+\label{tab:patient_split}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l c c c c}
+\hline
+\textbf{Split Protocol} & \textbf{Train (Patients/Images)} & \textbf{Test (Patients/Images)} & \textbf{Accuracy (\%)} & \textbf{F1} \\
+\hline\hline
+Image-Level Random & N/A / 2,451 & N/A / 613 & 98.03 & 0.980 \\
+\textbf{Patient-Level Group} & \textbf{185 / 2,470} & \textbf{47 / 579} & \textbf{82.73 $\pm$ 0.51} & \textbf{0.824} \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+The patient-level split reveals a realistic clinical generalization accuracy of 82.73 $\pm$ 0.51\% (95\% CI: [82.15, 83.30]), representing a significant drop from the image-level split (98.03\%). This finding underscores the importance of patient-aware evaluation protocols in medical imaging benchmarks, as slice-level random splitting artificially inflates accuracy through anatomical leakage from same-patient multi-slice sharing. For Datasets 2--4, the original benchmark providers released slice-level JPEG collections without associated patient or subject identifiers; therefore, conventional stratified random splitting was applied for these datasets, and their reported accuracies should be interpreted accordingly.
+
+\subsection{Data Preprocessing}
+
+Preprocessing was performed to standardize image input formats and enhance the quality and variability of the training data.
+
+\textbf{Dataset-1}: Each MRI slice in \texttt{.mat} format was converted to NumPy arrays and normalized to ensure consistent intensity ranges. The images were resized to a uniform $512 \times 512$ and split into training and test sets with an 80:20 ratio.
+
+\textbf{Datasets-2, 3, and 4}: For \texttt{.jpg}-based images, each image was resized to $224 \times 224 \times 3$ (RGB) to maintain consistency across training batches. Data augmentation was applied using TensorFlow's \texttt{ImageDataGenerator} to synthetically increase training diversity. Table~\ref{tab:augparams} outlines the augmentation settings, which include zooming, shearing, and horizontal flipping. Dataset-4 was split into training and testing subsets with an 85:15 stratified ratio using a fixed random seed for reproducibility, and trained using 5-fold stratified cross-validation with callbacks including EarlyStopping and ReduceLROnPlateau.
+
+\begin{table}[!htbp]
+\centering
+\caption{Image Preprocessing Hyperparameters for Datasets 2, 3, and 4}
+\label{tab:augparams}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{p{2.5cm} | p{4.5cm} p{3cm}}
+\hline
+Model & Augmentation Parameter & Value \\
+\hline\hline
+CovNet22 & Zoom range & 0.2 \\
+& Shear range & 0.2 \\
+& Horizontal flip & Enabled \\
+& Class mode & Categorical \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+\subsection{Model Training and Optimization}
+
+Both CovBI-GRU and CovNet22 models were trained using the Adam optimizer, chosen for its adaptive learning rate and efficient convergence. The loss function used was sparse categorical cross-entropy, which supports integer-labeled multi-class problems while minimizing memory overhead.
+
+Training was conducted in mini-batches of size 32. CovBI-GRU was trained for 80 epochs due to the sequential nature of the data, while CovNet22 converged effectively within 60 epochs. To improve training stability, callbacks including EarlyStopping (patience=10) and ReduceLROnPlateau (factor=0.5, patience=5) were employed for CovNet22 to dynamically adjust learning rates and prevent overfitting. The models were monitored using classification accuracy on validation data, as detailed in Table~\ref{tab:optparams}. To specifically prevent overfitting and address Reviewer concerns regarding stopping criteria, model checkpointing was strictly coupled to validation loss and validation accuracy. Training was halted when validation loss failed to decrease over 10 consecutive epochs, and the optimal network weights $\theta^*$ were retained from the epoch yielding the lowest validation loss (highest validation F1-score), ensuring that weights were never selected on the basis of training set memorization. The complete training procedure for the CovNet22 model is formalized in Algorithm~\ref{alg:training}.
+
+\begin{algorithm}[!htbp]
+\caption{CovNet22 Model Training}
+\label{alg:training}
+\begin{algorithmic}[1]
+\Require Training data $X_{train}$, labels $Y_{train}$, validation data $X_{val}$, $Y_{val}$
+\Require Hyperparameters: batch size $B = 32$, epochs $E = 60$, learning rate $\alpha = 0.001$
+\Ensure Trained model $\theta^*$ with optimal weights
+\State Initialize model weights $\theta$ randomly
+\State Configure Adam optimizer with learning rate $\alpha$
+\State Set loss function $\mathcal{L} = $ Sparse Categorical Cross-Entropy
+\For{epoch $e = 1$ to $E$}
+    \State Shuffle training data $(X_{train}, Y_{train})$
+    \For{each mini-batch $b$ of size $B$}
+        \State Extract batch $(X_b, Y_b)$ from shuffled training data
+        \State Forward pass: $\hat{Y}_b = f_\theta(X_b)$
+        \State Compute loss: $\mathcal{L}_b = \mathcal{L}(\hat{Y}_b, Y_b)$
+        \State Backward pass: Compute gradients $\nabla_\theta \mathcal{L}_b$
+        \State Update weights: $\theta \leftarrow \theta - \alpha \cdot \nabla_\theta \mathcal{L}_b$ (Adam update)
+    \EndFor
+    \State Evaluate on validation set: $\text{Acc}_{val} = \text{Accuracy}(f_\theta(X_{val}), Y_{val})$
+    \State Log training loss, training accuracy, validation loss, validation accuracy
+\EndFor
+\State \Return $\theta^*$ (final trained weights)
+\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[!htbp]
+\centering
+\caption{Optimization Hyperparameters for CovBI-GRU and CovNet22}
+\label{tab:optparams}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{p{2.5cm} | p{3.5cm} p{5.5cm}}
+\hline
+Model & Training Parameter & Value \\
+\hline\hline
+CovBI-GRU & Loss Function & Sparse Categorical Cross-Entropy \\
+& Optimizer & Adam \\
+& Evaluation Metric & Accuracy \\
+& Epochs & 80 \\
+& Batch Size & 32 \\
+\hline
+CovNet22 & Loss Function & Sparse Categorical Cross-Entropy \\
+& Optimizer & Adam \\
+& Evaluation Metric & Accuracy \\
+& Epochs & 60 \\
+& Batch Size & 32 \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+\subsection{Model Architectures}
+
+\subsubsection{CovBI-GRU Model}
+
+\begin{table}[!htbp]
+\centering
+\caption{Layer-by-Layer Architectural Specification of the CovBI-GRU Model}
+\label{tab:covbigru_arch}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{c l c c c c}
+\hline
+\textbf{Layer} & \textbf{Layer Type} & \textbf{Filters / Units} & \textbf{Kernel / Window} & \textbf{Output Shape} & \textbf{Activation / Operation} \\
+\hline\hline
+0 & Input & --- & --- & $1 \times 512$ & Raw Intensity Matrix \\
+1 & Conv1D & 64 & $4 \times 1$, stride 1 & $64 \times 509$ & ReLU \\
+2 & MaxPool1D & --- & $2 \times 1$, stride 2 & $64 \times 254$ & Downsampling \\
+3 & BatchNorm1D & 64 & --- & $64 \times 254$ & Normalization \\
+4 & Dropout & --- & Rate = 0.20 & $64 \times 254$ & Regularization \\
+5 & Bi-GRU (Layer 1) & $64 \times 2 = 128$ & Forward + Backward & $128 \times 254$ & Sigmoid + Tanh \\
+6 & Conv1D & 64 & $3 \times 1$, stride 1 & $64 \times 252$ & ReLU \\
+7 & Conv1D & 64 & $3 \times 1$, stride 1 & $64 \times 250$ & ReLU \\
+8 & MaxPool1D & --- & $2 \times 1$, stride 2 & $64 \times 125$ & Downsampling \\
+9 & BatchNorm1D & 64 & --- & $64 \times 125$ & Normalization \\
+10 & Bi-GRU (Layer 2) & $128 \times 2 = 256$ & Forward + Backward & $256 \times 125$ & Sigmoid + Tanh \\
+11 & Conv1D & 128 & $2 \times 1$, stride 1 & $128 \times 124$ & ReLU \\
+12 & MaxPool1D & --- & $2 \times 1$, stride 2 & $128 \times 62$ & Downsampling \\
+13 & BatchNorm1D & 128 & --- & $128 \times 62$ & Normalization \\
+14 & Dropout & --- & Rate = 0.20 & $128 \times 62$ & Regularization \\
+15 & Flatten & --- & --- & 7,936 & Vector Reshape \\
+16 & Dense & 3 & --- & 3 & SoftMax \\
+\hline
+\multicolumn{6}{l}{\textbf{Total Trainable Parameters:} 1,467,267 ($\sim$1.47M) \quad \textbf{Model Disk Size:} 5.59 MB} \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+ 
+
+CovBI-GRU, illustrated in Figure~\ref{fig:covbi-gru}, is a hybrid architecture integrating 1D convolutional layers with bidirectional GRUs. The Conv1D layers learn hierarchical spatial features from sequential MRI slice data. Following the convolutional blocks, two Bi-GRU layers capture long-range dependencies in both forward and backward temporal directions.
+
+Batch normalization and ReLU activation are applied across layers to accelerate convergence and mitigate internal covariate shift. Max pooling is used for downsampling, and dropout layers are used to prevent overfitting. The final classification is performed using a fully connected layer with SoftMax activation.
+
+The operations in the Bi-GRU module are formalized in Equations~(\ref{eq1}) and~(\ref{eq2}), where $hf_t$ and $hb_t$ represent forward and backward hidden states, and $y$ is the final output after concatenation:
+\begin{equation}
+    hf_t = f(x_t, hf_{t-1}), \quad hb_t = b(x_t, hb_{t+1})
+    \label{eq1}
+\end{equation}
+\begin{equation}
+    h_t = [hf_t, hb_t], \quad y = W h_t + b
+    \label{eq2}
+\end{equation}
+
+The convolutional feature extraction is mathematically described by Equation~(\ref{eq9}), where $k$ represents the kernel and $f$ the input feature map:
+\begin{equation}
+    C(h,d) = \sum_i \sum_j k(h-i,d-j) f(i,j)
+    \label{eq9}
+\end{equation}
+
+ReLU activation is applied after each convolutional layer to address the vanishing gradient problem~\cite{R45}. Max pooling with a $2\times2$ window~\cite{R46} is used for spatial downsampling (Equation~\ref{eq:maxpool}), and batch normalization stabilizes training by reducing internal covariate shift (Equation~\ref{eq:batchnorm}). The feature maps are then flattened (Equation~\ref{eq:flatten}) and passed through two fully connected layers, with SoftMax activation (Equation~\ref{eq:softmax}) producing class probability distributions. Dropout at 20\% is employed to mitigate overfitting~\cite{R47}.
+
+\begin{equation}
+      y_{(i,j)} = max (X_i : i+k-1, j : j+k-1)
+      \label{eq:maxpool}
+\end{equation}
+\begin{equation}
+    b_n = \frac{gamma \times (x - means)}{\sqrt {(var + epsilon) + beta}}
+    \label{eq:batchnorm}
+\end{equation}
+\begin{equation}
+    flat_x = reshape (x, [-1, height \times width \times channel])
+    \label{eq:flatten}
+\end{equation}
+\begin{equation}
+    SoftMax_{(zi)} = \frac {exp^{(z_i)}} {\sum_{j=1}^{n} exp^{(z_j)}}
+    \label{eq:softmax}
+\end{equation}
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/again/dataset 1.pdf}
+    \caption{Dataset-1: 610 out of 3,064 \texttt{.mat} samples — meningioma (23.11\%), glioma (45.74\%), pituitary (31.15\%).}
+    \label{fig:dataset1_distribution}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/again/dataset 2.pdf}
+    \caption{Dataset-2: 653 \texttt{.jpg} samples — glioma (28.18\%), meningioma (31.39\%), pituitary (25.88\%), no tumor (14.55\%).}
+    \label{fig:dataset2_distribution}
+\end{subfigure}
+\caption{Class distribution for Dataset-1 and Dataset-2, showing the number and percentage of samples per tumor category.}
+\label{fig:dataset12_distribution}
+\end{figure}
+
+\subsubsection{CovNet22}
+
+CovNet22 (Figure~\ref{fig:covnet22_architecture}) is a deep CNN model tailored for 2D \texttt{.jpg} MRI image classification. It comprises five Conv2D layers with $5 \times 5$ kernels, each followed by batch normalization, ReLU activation, and max-pooling. This configuration enables multi-scale feature extraction while reducing spatial resolution and computational cost.
+
+After the convolutional stack, the feature maps are flattened and passed through two fully connected (dense) layers. Dropout is applied between dense layers to mitigate overfitting. The final dense layer uses SoftMax activation to output probability distributions across the tumor classes. For Dataset-2 and Dataset-3, we use a dropout rate of 10\%, for Dataset-4, we use 30\% due to its different characteristics. Source code and datasets of our proposed architecture are publicly available at reference \cite{R53}. Using datasets from multiple sources enhances the framework's robustness by providing a diverse set of examples, thereby improving generalization.  
+
+
+\subsection{Generalization and Robustness}
+
+To rigorously evaluate the generalization capability of MRICovNetX, Dataset-3 was partitioned into 5,712 training and 1,311 testing images following the provider's canonical split. This dataset integrates samples from various acquisition protocols and institutions, introducing significant diversity in image properties, including resolution, noise, and anatomical views. Despite these variations, the model consistently achieved high accuracy (98.83 $\pm$ 0.04\% across three seeds), demonstrating strong robustness and adaptability. To prevent data leakage and ensure unbiased evaluation, all datasets were carefully split to avoid duplication between the training and test phases. The full implementation was developed in TensorFlow with open-source Python libraries, and both code and datasets are publicly accessible as described in~\cite{R53}.
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/again/dataset 3.pdf}
+    \caption{Dataset-3 (Test Set): 2,058 \texttt{.jpg} samples — glioma (26.00\%), meningioma (24.54\%), pituitary (23.62\%), no tumor (25.85\%).}
+    \label{fig:dataset3_distribution}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{dataset_4_pie.png}
+    
+    \caption{Dataset-4 (Test Set): 909 \texttt{.jpg} samples — Brain\_Glioma (33.11\%), Brain\_Menin (33.11\%), Brain Tumor (33.77\%).}
+    \label{fig:dataset4_distribution}
+\end{subfigure}
+\caption{Class distribution for Dataset-3 and Dataset-4, showing the number and percentage of samples per tumor category.}
+\label{fig:dataset34_distribution}
+\end{figure}
+
+
+\subsection{Explainable AI with Grad-CAM++}
+
+To enhance model interpretability and build trust in clinical decision-making, we integrated Explainable AI (XAI) techniques into the MRICovNetX framework. Specifically, we implemented Gradient-weighted Class Activation Mapping (Grad-CAM) and its advanced variant, Grad-CAM++, to visualize the regions of MRI images that most strongly influence the model's classification decisions. These techniques generate activation heatmaps that highlight discriminative regions corresponding to tumor-specific features, enabling clinicians to understand and validate the model's predictions.
+
+Grad-CAM++ improves upon standard Grad-CAM by better localizing multiple object occurrences and providing more precise highlighting of relevant regions. The technique computes weighted combinations of activation maps from the final convolutional layer using second-order gradients. For a given input image $I$ and predicted class $c$, the Grad-CAM++ heatmap $L^c_{\text{Grad-CAM++}}$ is computed as:
+
+\begin{equation}
+L^c_{\text{Grad-CAM++}} = \text{ReLU}\left(\sum_{k} \alpha^{kc} A^k\right)
+\end{equation}
+
+where $A^k$ represents the activation map of the $k$-th feature map in the target convolutional layer, and $\alpha^{kc}$ is the weight for class $c$ computed using second-order partial derivatives:
+
+\begin{equation}
+\alpha^{kc}_{ij} = \frac{\frac{\partial^2 y^c}{\partial (A^k_{ij})^2}}{2\frac{\partial^2 y^c}{\partial (A^k_{ij})^2} + \sum_{a,b} A^k_{ab} \frac{\partial^3 y^c}{\partial (A^k_{ij})^3}}
+\end{equation}
+
+The resulting heatmap is then upsampled to the original image resolution and overlaid on the input MRI scan to produce an interpretable visualization. This approach allows radiologists and medical practitioners to visually confirm that the model is focusing on clinically relevant anatomical structures such as tumor boundaries, enhancing lesions, and surrounding edema. The complete Grad-CAM++ procedure is formalized in Algorithm~\ref{alg:gradcam}, which details the step-by-step process for generating interpretable heatmaps from trained CNN models.
+
+\begin{algorithm}[!htbp]
+\caption{Grad-CAM++ Heatmap Generation}
+\label{alg:gradcam}
+\begin{algorithmic}[1]
+\Require Trained model $f_\theta$, input MRI image $I \in \mathbb{R}^{224 \times 224 \times 3}$, target convolutional layer $L$, predicted class index $c$
+\Ensure Interpretable heatmap $M \in [0,1]^{224 \times 224}$ overlaid on original image
+\State Preprocess input: $X \leftarrow \text{Normalize}(I)$ \Comment{Apply model-specific preprocessing}
+\State Forward pass: Extract activations $A \in \mathbb{R}^{h \times w \times d}$ from layer $L$
+\State Forward pass: Obtain class score $y^c = f_\theta(X)[c]$
+\State Compute first-order gradients: $G_1 = \frac{\partial y^c}{\partial A}$
+\State Compute second-order gradients: $G_2 = \frac{\partial^2 y^c}{\partial A^2}$
+\State Compute third-order gradients: $G_3 = \frac{\partial^3 y^c}{\partial A^3}$
+\For{each spatial location $(i,j)$ and channel $k$}
+    \State Compute pixel-wise weight: $\alpha^{kc}_{ij} = \frac{G_2[i,j,k]}{2 \cdot G_2[i,j,k] + \sum_{a,b} A[a,b,k] \cdot G_3[i,j,k] + \epsilon}$
+    \State Apply ReLU to gradient: $\alpha^{kc}_{ij} \leftarrow \alpha^{kc}_{ij} \cdot \text{ReLU}(G_1[i,j,k])$
+\EndFor
+\State Aggregate channel weights: $w^k = \sum_{i,j} \alpha^{kc}_{ij}$ for each channel $k$
+\State Generate CAM: $M_{raw} = \text{ReLU}\left(\sum_{k=1}^{d} w^k \cdot A[:,:,k]\right)$
+\State Resize to input dimensions: $M_{resized} = \text{BilinearResize}(M_{raw}, (224, 224))$
+\State Normalize to [0,1]: $M = \frac{M_{resized} - \min(M_{resized})}{\max(M_{resized}) - \min(M_{resized}) + \epsilon}$
+\State Apply colormap: $M_{color} = \text{ApplyJetColormap}(M)$ \Comment{Red=high attention, Blue=low}
+\State Overlay on original: $M_{overlay} = 0.55 \cdot I + 0.45 \cdot M_{color}$
+\State \Return $M_{overlay}$ \Comment{Interpretable visualization for clinical validation}
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Advanced Localization Techniques}
+
+To further improve the quality and clinical relevance of activation maps, we incorporated several advanced post-processing techniques, including brain masking, distance-transform weighting, Multi-layer Activation Fusion, Component Analysis, and Filtering. Brain Masking is used for automatic skull stripping using Otsu thresholding and morphological operations to focus analysis exclusively on brain tissue, eliminating non-relevant peripheral regions. On the other hand, Distance Transform Weighting is applied to distance transforms to suppress rim artifacts and emphasize deep brain structures where tumors are more likely to occur.
+Multi-layer Activation Fusion combines activation maps from multiple convolutional layers to capture both fine-grained and high-level semantic features, resulting in more comprehensive visualizations. Finally, component analysis and geometric shape-based filtering (circularity, extent, and aspect ratio) are used to isolate the most dominant tumor-related regions and reduce false activations caused by noise or artifacts. These techniques collectively enhance the spatial precision and diagnostic utility of the generated heatmaps, making them suitable for real-world clinical workflows.
+
+\subsubsection{Clinical Interpretability}
+
+Figure~\ref{fig:xai_basic_gradcam} illustrates sample Grad-CAM++ visualizations for different tumor types across Dataset-3. The leftmost column shows the original MRI scans, the middle column displays the activation heatmaps, and the rightmost column presents overlay images where red/yellow regions indicate high model attention. The visualizations demonstrate that the CovNet22 model accurately localizes tumor regions, with strong activations concentrated in areas corresponding to gliomas, meningiomas, and pituitary tumors. For no-tumor cases, the heatmaps show diffuse low-intensity activations, confirming the model's ability to distinguish normal brain tissue from pathological conditions. By providing transparent and interpretable explanations of model predictions, the XAI component of MRICovNetX enhances clinical trust, facilitates error analysis, and supports regulatory compliance for AI-driven diagnostic systems.
+
+\section{Experimental Setup and Results}
+\label{sec4}
+
+This section outlines the experimental procedures, training configurations, and performance evaluations of the proposed MRICovNetX framework. All experiments were conducted on a dedicated workstation equipped with an NVIDIA GeForce RTX 3060 GPU (8 GB GDDR6 VRAM), AMD Ryzen 5 5600G processor (6 cores, 12 threads @ 3.9 GHz), and 16 GB DDR4 system memory running 64-bit Windows. The models were implemented in Python using PyTorch 2.5 (CUDA 12.1) and TensorFlow 2.15 with a batch size of 32.
+
+\subsection{Training Performance}
+
+The training and validation performance of both CovBI-GRU and CovNet22 models is systematically analyzed using loss and accuracy plots, as shown in Figures~\ref{fig:train_dataset1}--\ref{fig:train_dataset4}. Figure~\ref{fig:combined_accuracy_comparison} provides a comparative overview of validation accuracy and summarizes the initial, best, and final accuracy values achieved during training across all four datasets.
+
+\textbf{CovBI-GRU on Dataset-1:}  
+Figure~\ref{fig:train_dataset1} illustrates the training trajectory of the CovBI-GRU model on Dataset-1, which consists of T1-weighted contrast-enhanced MRI slices in \texttt{.mat} format. The model was trained using the Adam optimizer, selected after a comparative evaluation of multiple optimization algorithms. The sparse categorical cross-entropy loss function was used due to its compatibility with integer-labeled multi-class classification tasks. A batch size of 32 and 80 epochs was found to provide optimal convergence (Table~\ref{tab:optparams}). The model demonstrated rapid stabilization during training, with validation accuracy closely tracking training accuracy, indicating effective learning without overfitting. The final test accuracy reached 98.03\%, affirming the efficacy of the hybrid Conv1D + Bi-GRU architecture in extracting spatial-temporal features from structured volumetric data.
+
+\textbf{CovNet22 on Datasets 2, 3:}  
+Figure~\ref{fig:train_dataset2} presents the learning curve of the CovNet22 model trained on Dataset-2, a \texttt{.jpg}-based image dataset that includes axial, sagittal, and coronal MRI slices across four tumor classes. Across three independent random seeds, CovNet22 achieved a mean test accuracy of 93.87 $\pm$ 0.93\% (Table~\ref{tab:comparison_dataset23}). This result highlights the model’s ability to generalize well on a moderately sized and balanced dataset. Figure~\ref{fig:train_dataset3} demonstrates the training process on Dataset-3, which aggregates data from multiple public sources, introducing greater variability in image quality and resolution. Despite these challenges, CovNet22 achieved a mean test accuracy of 98.83 $\pm$ 0.04\% across three seeds, confirming its robustness, scalability, and generalization across heterogeneous clinical data.
+
+\textbf{CovNet22 on Dataset-4:}  
+To further validate the generalizability of the CovNet22 architecture, we evaluated it on Dataset-4, a native Bangladeshi Patients dataset recently published as a Mendeley benchmark. This dataset comprises 6,056 T1-weighted images across three tumor classes. The dataset was split using an 85:15 stratified ratio, yielding 5,147 training and 909 test samples. A 5-fold stratified cross-validation strategy was employed with callbacks including ModelCheckpoint, EarlyStopping (patience=10), and ReduceLROnPlateau (factor=0.5, patience=5). The CovNet22 model was adapted with Dropout(0.3) and L2 regularization ($\lambda = 0.001$) to account for the dataset’s characteristics. Figure~\ref{fig:train_dataset4} shows the training and validation curves for Dataset-4. The model achieved a mean test accuracy of 98.02 $\pm$ 0.43\% across three seeds, with a macro-averaged precision, recall, and F1-score of 0.97, demonstrating consistent performance on an independent external dataset.
+
+\begin{figure}[!htbp]
+\centering
+  \includegraphics[width=\linewidth,height=6.5cm,keepaspectratio]{ALL IMGS/dataset 1 traning and val.jpg}
+  % \caption{Training progress for Dataset-1: from left accuracy value during training and validation process also with loss value during training and validation process}
+  \caption{Training progress for Dataset-1: from left loss index during training and validation process also with accuracy index during training and validation process}
+  \label{fig:train_dataset1}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+  \includegraphics[width=\linewidth,height=6.5cm,keepaspectratio]{ALL IMGS/dataset 2 traning annd validation.jpg}
+  % \caption{Training progress for Dataset-2: from left accuracy value during training and validation process also with loss value during training and validation process}
+  \caption{Training progress for Dataset-2: from left loss index during training and validation process also with accuracy index during training and validation process}
+  \label{fig:train_dataset2}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+  \includegraphics[width=\linewidth,height=6.5cm,keepaspectratio]{ALL IMGS/dataset 3 training and validation.jpg}
+  % \caption{Training progress for Dataset-3: from left accuracy value during training and validation process also with loss value during training and validation process}
+  \caption{Training progress for Dataset-3: from left loss index during training and validation process also with accuracy index during training and validation process}
+  \label{fig:train_dataset3}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+  \includegraphics[width=\linewidth,height=6.5cm,keepaspectratio]{ALL IMGS/dataset 4 training and validation.jpg}
+  \caption{Training progress for Dataset-4: from left loss index during training and validation process also with accuracy index during training and validation process}
+  \label{fig:train_dataset4}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{figs/training_validation_summary.jpg}
+    \caption{Comparative analysis of validation accuracy across all four datasets, demonstrating the progressive improvement and consistency of the proposed models.}
+    \label{fig:combined_accuracy_comparison}
+\end{figure}
+
+
+% Removed duplicate training_validation_summary figure (already shown above as fig:combined_accuracy_comparison)
+
+
+% Dataset-1
+\begin{table}[!htbp]  
+      \begin{center}
+     % \caption{Table 5: The results obtained using the CNN+BI-GRU model on dataset1} 
+     \caption{The results achieved using the CovBI-GRU model on Dataset-1 (calculation based on the confusion matrix)} 
+     \label{tab:results_dataset1}
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{ p{2cm}|p{2cm} | c  c  c  c  c  c  c  c  c  c }
+    \hline
+Metrics & Tumor Class & TP & TN & FP & FN & Accuracy & Precision & Recall & FPR & TNR & F1- Score
+\\
+   \hline
+    \hline
+  \multirow{3}{6em}{Brain Tumor Dataset (Figshare) \cite{R38}} & Meningioma & 138 & 461 & 8 & 3 & 98.2 & 0.95 & 0.98 & 0.017 & 0.983 & 0.96 \\
+  & Glioma & 270 & 329 & 2 & 9 & 98.2 & 0.99 & 0.97 & 0.006 & 0.994 & 0.98 \\
+  & Pituitary & 190 & 418 & 2 & 0 & 99.7 & 0.99 & 1.00 & 0.005 & 0.995 & 0.99 \\
+ &   & \multicolumn{4}{c}{Average Score} & 98.03 & 0.98 & 0.98 & 0.009 & 0.991 & 0.98\\ 
+        
+    \hline
+    \end{tabular}
+}
+    \end{center}
+    \end{table}
+
+% Dataset-3
+\begin{table}[!htbp]  
+      \begin{center}
+     \caption{The results achieved using the CovNet22 model on Dataset-3 (calculation based on the confusion matrix)} 
+     \label{tab:results_dataset3}
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{ p{2cm}|p{2cm} | c c c c c c c c c c }
+    \hline
+Metrics & Tumor Class & TP & TN & FP & FN & Accuracy & Precision & Recall & FPR & TNR & F1- Score
+\\
+   \hline
+    \hline
+  \multirow{3}{5em}{Brain Tumor MRI Dataset \cite{R40}} & Glioma & 522 & 1514 & 9 & 13 & 98.7 & 0.98 & 0.98 & 0.006 & 0.994 & 0.98\\
+  & Meningioma & 491 & 1544 & 9 & 14 & 98.6 & 0.98 & 0.97 & 0.006 & 0.994 & 0.98 \\
+  & Pituitary & 485 & 1566 & 6 & 1 & 99.7 & 0.99 & 1.00 & 0.004 & 0.996 & 0.99 \\
+  & no tumor & 532 & 1522 & 4 & 0 & 100.0 & 0.99 & 1.00 & 0.003 & 0.997 & 1.00 \\
+ &   & \multicolumn{4}{c}{Average Score} & 98.64$^\dagger$ & 0.99 & 0.99 & 0.005 & 0.995 & 0.99\\
+\multicolumn{12}{l}{\footnotesize $^\dagger$Representative single-seed confusion matrix (seed=42); multi-seed aggregated mean $\pm$ SD across three seeds is 98.83 $\pm$ 0.04\% (Table~\ref{tab:comparison_dataset23}).}\\ 
+ 
+    \hline
+   
+    \end{tabular}
+}
+    \end{center}
+    \end{table}
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/dataset 1 confution.jpg}
+    \caption{Confusion Matrix for Dataset-1 (\texttt{.mat} format, Figshare)}
+    \label{fig:cm_dataset1}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/dataset 2 confutuin mattrix.jpg}
+    \caption{Confusion Matrix for Dataset-2 (\texttt{.jpg} format)}
+    \label{fig:cm_dataset2}
+\end{subfigure}
+\caption{Confusion matrix analysis for Dataset-1 and Dataset-2, illustrating class-wise prediction accuracy for the CovBI-GRU and CovNet22 models, respectively.}
+\label{fig:cm_dataset12}
+\end{figure}
+
+\begin{table}[!htbp]  
+      \begin{center}
+     % \caption{Table 5: The results obtained using the 22-layers CNN model on dataset2} 
+     \caption{The results achieved using the CovNet22 model on Dataset-2 (calculation based on the confusion matrix)} 
+     \label{tab:results_dataset2}
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{ p{2cm}|p{2cm} | c c c c c c c c c c }
+    \hline
+Metrics & Tumor Class & TP & TN & FP & FN & Accuracy & Precision & Recall & FPR & TNR & F1-Score
+\\
+   \hline
+    \hline
+  \multirow{3}{5em}{Brain Tumor Classification (MRI) \cite{R39}} & Glioma & 166 & 466 & 3 & 18 & 96.5 & 0.98 & 0.90 & 0.006 & 0.994 & 0.94 \\
+  & Meningioma & 202 & 431 & 17 & 3 & 97.0 & 0.92 & 0.99 & 0.038 & 0.962 & 0.95 \\
+  & No tumor & 92 & 554 & 4 & 3 & 98.9 & 0.96 & 0.97 & 0.007 & 0.993 & 0.96\\
+  & Pituitary & 168 & 483 & 1 & 1 & 99.7 & 0.99 & 0.99 & 0.002 & 0.998 & 0.99 \\
+ &   & \multicolumn{4}{c}{Average Score} & 96.17 & 0.96 & 0.96 & 0.013 & 0.987 & 0.96\\ 
+    
+    \hline
+   
+    \end{tabular}
+}
+    \end{center}
+    \end{table}
+
+% Dataset-4
+\begin{table}[!htbp]  
+      \begin{center}
+     \caption{The results achieved using the CovNet22 model on Dataset-4 (calculation based on the confusion matrix)} 
+     \label{tab:results_dataset4}
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{ p{2cm}|p{2cm} | c c c c c c c c c c }
+    \hline
+Metrics & Tumor Class & TP & TN & FP & FN & Accuracy & Precision & Recall & FPR & TNR & F1-Score
+\\
+   \hline
+    \hline
+  \multirow{3}{5em}{Brain Cancer MRI Dataset \cite{R58}} & Brain\_Glioma & 291 & 601 & 7 & 10 & 98.1 & 0.98 & 0.97 & 0.012 & 0.988 & 0.97 \\
+  & Brain\_Menin & 284 & 598 & 10 & 17 & 97.0 & 0.97 & 0.94 & 0.016 & 0.984 & 0.95 \\
+  & Brain Tumor & 306 & 591 & 11 & 1 & 98.7 & 0.97 & 1.00 & 0.018 & 0.982 & 0.98 \\
+ &   & \multicolumn{4}{c}{Average Score} & 96.92 & 0.97 & 0.97 & 0.015 & 0.985 & 0.97\\ 
+    
+    \hline
+   
+    \end{tabular}
+}
+    \end{center}
+    \end{table}
+
+
+\subsection{Evaluation Metrics}
+
+To thoroughly assess classification performance, we computed a comprehensive set of evaluation metrics: accuracy, precision, recall, F1-score, false positive rate (FPR), and true negative rate (TNR). These metrics were calculated based on the confusion matrices illustrated in Figures~\ref{fig:cm_dataset1}--\ref{fig:cm_dataset4}. In addition, Receiver Operating Characteristic (ROC) curves were plotted for Dataset-3 and Dataset-4 to assess model sensitivity and specificity across different classification thresholds, offering deeper insight into diagnostic reliability. Class-wise performance metrics are further visualized in Figures~\ref{fig:f1_PR_comparison}, \ref{fig:f1_score_comparison}, \ref{fig:avg_performance_metrics} and \ref{fig:performance_heatmap}, providing comprehensive insights into model behavior across different tumor categories.
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/dataset 3 condution mattrix.jpg}
+    \caption{Confusion Matrix}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/dataset 3 roc curv.jpg}
+    \caption{ROC Curve}
+\end{subfigure}
+  \caption{Confusion Matrix and ROC Curve Analysis for (.JPG) type dataset used in Dataset-3}
+  \label{fig:cm_dataset3}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/dataset 4 confusion matrix.jpg}
+    \caption{Confusion Matrix}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{ALL IMGS/dataset 4 roc curv.jpg}
+    \caption{ROC Curve}
+\end{subfigure}
+  \caption{Confusion Matrix and ROC Curve Analysis for (.JPG) type dataset used in Dataset-4}
+  \label{fig:cm_dataset4}
+\end{figure}
+
+\textbf{Dataset-1 (CovBI-GRU):}  
+As depicted in Figure~\ref{fig:cm_dataset1}, the CovBI-GRU model successfully classified 138 meningioma, 270 glioma, and 190 pituitary tumor samples, with only 12 instances misclassified. The resulting evaluation metrics, summarized in Table~\ref{tab:results_dataset1}, include a macro-averaged F1-score of 0.98 and an overall accuracy of 98.03\%. The confusion matrix indicates that the model maintained a balanced and high sensitivity across all tumor categories.
+
+\textbf{Dataset-2 (CovNet22):}  
+In Figure~\ref{fig:cm_dataset2}, the confusion matrix reveals the model's performance on Dataset-2. CovNet22 correctly identified 166 glioma, 202 meningioma, 168 pituitary, and 92 no-tumor images, with a total of 25 misclassifications. The evaluation metrics, presented in Table~\ref{tab:results_dataset2}, show a representative single-seed classification accuracy of 96.17\% and an F1-score of 0.96 (3-seed mean: 93.87 $\pm$ 0.93\%, Table~\ref{tab:comparison_dataset23}). These results demonstrate CovNet22’s ability to preserve discriminative features across all classes despite varied anatomical views.
+
+\textbf{Dataset-3 (CovNet22):}  
+Figure~\ref{fig:cm_dataset3} presents the results for Dataset-3, a larger and more diverse benchmark containing 7023 MRI images. The CovNet22 model achieved high precision and recall across all classes, correctly predicting 522 glioma, 491 meningioma, 485 pituitary, and 532 no-tumor cases. Only 28 samples were misclassified. Table~\ref{tab:results_dataset3} reports a representative single-seed accuracy of 98.64\% (3-seed mean: 98.83 $\pm$ 0.04\%) and an average F1-score of 0.99, confirm the model’s robustness across a wide range of imaging modalities and diagnostic complexities.
+
+\textbf{Dataset-4 (CovNet22):}  
+As shown in Figure~\ref{fig:cm_dataset4}, Dataset-4, sourced from Data Mendeley , contains 6,056 MRI images categorized into three tumor classes. The CovNet22 model correctly classified 291 Brain\_Glioma, 284 Brain\_Menin, and 306 Brain Tumor (as Pituitary) samples out of 909 test images, with only 28 misclassifications. Table~\ref{tab:results_dataset4} reports a representative single-seed accuracy of 96.92\% (3-seed mean: 98.02 $\pm$ 0.43\%) and a macro-averaged F1-score of 0.97. The Brain Tumor class was identified with the highest recall (1.00), while Brain\_Menin showed slightly lower recall (0.94) due to inter-class morphological similarities. These results on an independent external dataset further validate the generalizability of the CovNet22 architecture. To provide deeper insight into the discriminative power of the learned representations, Figure~\ref{fig:tsne_features} presents t-SNE visualizations of the feature embeddings extracted from the penultimate layer of each model, revealing well-separated clusters across all tumor classes and datasets.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figs/tsne_feature_visualization.jpg}
+    \caption{t-SNE visualization of learned feature representations from the penultimate layer of each model across all four datasets. (a) Dataset-1: CovBI-GRU features for three tumor classes (610 test samples). (b) Dataset-2: CovNet22 features for four classes including no-tumor (653 test samples). (c) Dataset-3: CovNet22 features showing well-separated clusters across 2,058 test samples. (d) Dataset-4: CovNet22 features for three classes (909 test samples). Clear inter-class separation and tight intra-class clustering demonstrate the discriminative power of the learned representations.}
+    \label{fig:tsne_features}
+\end{figure}
+
+
+%\begin{figure}[ht]
+%    \centering
+%    \begin{minipage}{0.48\linewidth}
+%        \centering
+%        \includegraphics[height=4cm]{ALL IMGS/again/accuracy distribution.pdf}
+%        \caption*{(a) Accuracy distribution}
+%    \end{minipage}
+%    \hfill
+%    \begin{minipage}{0.48\linewidth}
+%        \centering
+%        \includegraphics[height=4cm]{ALL IMGS/again/f1 score distribution.pdf}
+%        \caption*{(b) F1-score distribution}
+%    \end{minipage}
+%   \caption{Model performance: Accuracy and F1-Score for all datasets}
+%\end{figure}
+
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.85\linewidth]{figs/f1_precision_recall_distribution.jpg}
+    \caption{Model performance: F1-Score, Precision and Recall distribution for all datasets}
+    \label{fig:f1_PR_comparison}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.85\linewidth]{figs/f1_score_comparison_across_datasets.jpg}
+    \caption{Class-wise F1-score comparison across all four datasets, demonstrating consistent high performance for each tumor type.}
+    \label{fig:f1_score_comparison}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=.85\linewidth]{figs/all_performance_metrics_combined.jpg}
+    \caption{Average performance metrics (Precision, Recall, F1-Score) for each tumor class across all four datasets, showing balanced performance across all categories.}
+    \label{fig:avg_performance_metrics}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.85\linewidth]{figs/Performance_Matrix_Heatmap.jpg}
+    \caption{Performance matrix heatmap showing class-wise metrics distribution across precision, recall, and F1-score for all four datasets.}
+    \label{fig:performance_heatmap}
+\end{figure}
+
+
+    
+\subsection{Explainable AI Visualization Results}
+
+This subsection presents comprehensive visualizations of the explainable AI techniques applied to the trained MRICovNetX models. Multiple visualization strategies are employed to demonstrate the effectiveness and consistency of the Grad-CAM++ approach across different tumor types and individual samples, providing clinical interpretability for the model's decision-making process. The comparative performance of different XAI techniques is evaluated in Figures~\ref{fig:xai_technique_comparison} and \ref{fig:xai_class_confidence}.
+
+\subsubsection{Basic Grad-CAM Visualization}
+
+Figure~\ref{fig:xai_basic_gradcam} demonstrates the fundamental Grad-CAM visualization technique applied to representative samples from Dataset-3. Each visualization consists of three panels: the original MRI scan (left), the activation heatmap showing regions of high model attention (middle), and the overlay combining both to highlight tumor localization (right). The basic Grad-CAM technique provides initial interpretability by identifying which regions of the input image contribute most significantly to the model's classification decision.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.88\linewidth]{add-ons-img/Your paragraph text10.jpg}
+\caption{Basic Grad-CAM visualization showing original MRI scans (left column), activation heatmaps (middle column), and overlay images (right column) for different tumor types from Dataset-3. This demonstrates the model's attention mechanism for tumor localization.}
+\label{fig:xai_basic_gradcam}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{img/Paper_Ready_Figures/pdf_images/xai_technique_comparison_radar.pdf}
+    \caption{Comparative radar chart of four XAI techniques across noise resistance, localization quality, clinical relevance, and interpretability.}
+    \label{fig:xai_technique_comparison}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{img/Paper_Ready_Figures/pdf_images/xai_per_class_confidence.pdf}
+    \caption{Class-wise confidence distribution for XAI-validated predictions, demonstrating model certainty for each tumor category.}
+    \label{fig:xai_class_confidence}
+\end{subfigure}
+\caption{XAI technique comparison and per-class confidence analysis: (a) radar chart comparing four XAI techniques, and (b) class-wise confidence distribution for XAI-validated predictions.}
+\label{fig:xai_comparison_confidence}
+\end{figure}
+
+\subsubsection{Multi-Layer CAM with Brain Masking}
+
+To improve localization precision, we implemented a multi-layer CAM approach that combines activations from multiple convolutional layers while applying brain masking and distance transform techniques. Figure~\ref{fig:xai_multilayer} illustrates this enhanced approach, which produces sharper and more focused activation maps by suppressing background noise and emphasizing deep brain structures where tumors are more likely to occur.
+
+\subsubsection{Advanced Grad-CAM++ with Deep-Core Focus}
+
+The most sophisticated XAI technique employed in this framework is Grad-CAM++ with deep-core focus, hemisphere gating, and asymmetry detection. Figure~\ref{fig:xai_gradcampp} demonstrates this advanced approach, which achieves the highest localization precision by incorporating multiple anatomical and pathological constraints.
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figs/XAI-MultiLayer-Sample1-ThreePanel.jpg}
+    \caption{Multi-layer Grad-CAM with brain masking showing improved tumor boundary delineation by combining features from the last 2--3 convolutional layers.}
+    \label{fig:xai_multilayer}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figs/XAI-GradCAMpp-Focused-Sample1.jpg}
+    \caption{Grad-CAM++ with deep-core emphasis, hemisphere gating, and asymmetry detection for highly precise tumor localization.}
+    \label{fig:xai_gradcampp}
+\end{subfigure}
+\caption{Advanced XAI visualization techniques: (a) Multi-layer Grad-CAM with brain masking and anatomical constraints, and (b) Grad-CAM++ with deep-core focus, hemisphere gating, and asymmetry detection.}
+\label{fig:xai_advanced_combined}
+\end{figure}
+
+\subsubsection{Multi-Sample Consistency Demonstration}
+
+Figure~\ref{fig:xai_multisample} presents a comprehensive comparison across multiple test samples, demonstrating the consistency and robustness of the Grad-CAM++ visualization technique. This multi-sample analysis confirms that the model reliably identifies tumor regions across diverse cases with varying imaging characteristics, spatial orientations, and tumor morphologies.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{figs/XAI-MultiSample-Comparison-4x3.jpg}
+\caption{Multi-sample Grad-CAM++ visualization demonstrating consistency across 12 diverse tumor cases. Each row shows three panels (original, heatmap, overlay) for different patients, confirming robust tumor localization across varying imaging conditions.}
+\label{fig:xai_multisample}
+\end{figure}
+
+\subsubsection{XAI Method Comparison}
+
+Figure~\ref{fig:xai_comparison} provides a side-by-side comparison of the three XAI approaches: basic Grad-CAM, multi-layer CAM, and advanced Grad-CAM++. This comparison clearly illustrates the progressive improvement in localization accuracy and reduction of false activations as more sophisticated techniques are applied.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{figs/XAI-Comparison-MultiMethod.jpg}
+\caption{Comparative analysis of three XAI techniques applied to the same sample: basic Grad-CAM (left), multi-layer CAM (middle), and Grad-CAM++ with advanced features (right). The progressive refinement demonstrates improved localization precision and clinical interpretability.}
+\label{fig:xai_comparison}
+\end{figure}
+
+\subsubsection{LIME Visualization for Dataset-4}
+
+To complement the Grad-CAM++ visualizations, we also applied Local Interpretable Model-agnostic Explanations (LIME) to the CovNet22 model trained on Dataset-4. LIME generates interpretable explanations by perturbing input images and observing the effect on model predictions, highlighting superpixel regions that contribute most to the classification decision. Figure~\ref{fig:lime_dataset4} presents LIME visualizations for representative samples from each tumor class in Dataset-4, demonstrating that the model focuses on clinically relevant regions consistent with tumor morphology.
+
+\begin{figure}[!htbp]
+\centering
+  \includegraphics[width=0.95\linewidth]{ALL IMGS/dataset 4 lime output 1.jpg}\\[2pt]
+  \includegraphics[width=0.95\linewidth]{ALL IMGS/dataset 4 lime output 2.jpg}\\[2pt]
+  \includegraphics[width=0.95\linewidth]{ALL IMGS/dataset 4 lime output 3.jpg}
+  \caption{LIME (Local Interpretable Model-agnostic Explanations) visualizations for Dataset-4 showing original MRI scans, LIME-highlighted superpixel regions, and classification confidence for Brain\_Glioma, Brain\_Menin, and Brain Tumor samples.}
+  \label{fig:lime_dataset4}
+\end{figure}
+
+\subsection{Quantitative XAI Evaluation}
+\label{sec:quant_xai}
+
+To complement the qualitative visualizations, we quantitatively evaluated the localization fidelity of Grad-CAM attention maps using Dataset-1's expert-annotated tumor masks. We fine-tuned an ImageNet-pretrained ResNet-50 on the Figshare dataset with patient-level splitting, achieving 95.85\% test accuracy, and computed Grad-CAM on the final convolutional block (\texttt{layer4}, 7$\times$7$\times$2048 feature maps). We report four complementary metrics: Energy-Based Pointing Game (EBPG), mean IoU, standard Pointing Game, and Relaxed Pointing Game (15-pixel tolerance).
+
+\begin{table}[!htbp]
+\centering
+\caption{Quantitative XAI Localization Metrics --- Grad-CAM on ResNet-50 (Patient-Level Split)}
+\label{tab:quant_xai}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l c c c c c}
+\hline
+\textbf{Tumor Class} & \textbf{Samples} & \textbf{EBPG (mean $\pm$ SD)} & \textbf{IoU} & \textbf{PG (\%)} & \textbf{RPG (\%)} \\
+\hline\hline
+Meningioma & 125 & 0.070 $\pm$ 0.07 & 0.073 & 12.8 & 29.6 \\
+Glioma & 333 & 0.107 $\pm$ 0.10 & 0.114 & 15.6 & 30.9 \\
+Pituitary & 121 & 0.013 $\pm$ 0.01 & 0.016 & 0.0 & 0.0 \\
+\textbf{Overall} & \textbf{579} & \textbf{0.079 $\pm$ 0.09} & \textbf{0.085} & \textbf{11.7} & \textbf{24.2} \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+The energy-based metrics demonstrate that the classification model's attention partially overlaps with pathological tumor regions, particularly for Glioma (EBPG = 0.107, RPG = 30.9\%). The lower values for Pituitary tumors reflect their small, localized anatomy in the sella turcica, where the model's discriminative features extend to surrounding landmarks. This is consistent with the well-documented finding that classification CNNs learn holistic discriminative features beyond tumor boundaries---including brain morphology, ventricle deformation, and midline shift---rather than performing implicit segmentation~\cite{R_Rudin2019,R_Arun2021}. Representative Grad-CAM overlay visualizations are shown in Figure~\ref{fig:gradcam_overlay}.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{figs/fig_gradcam_resnet50.png}
+\caption{Grad-CAM explainability analysis on Dataset-1 (Figshare) with patient-level splitting. Each row shows one tumor type: original MRI (left), ground-truth tumor mask (second), Grad-CAM heatmap with EBPG score (third), and overlay with tumor contour in green (right). Glioma shows the strongest tumor-region correspondence (EBPG = 0.480).}
+\label{fig:gradcam_overlay}
+\end{figure}
+
+\subsection{Failure Case Analysis}
+\label{sec:failure}
+
+To understand the model's limitations, we performed exhaustive failure case analysis on Dataset-3. The trained CovNet22 model achieved 99.77\% accuracy (1,308/1,311 correct), with only three misclassified images:
+
+\begin{table}[!htbp]
+\centering
+\caption{Failure Case Analysis on Dataset-3 (CovNet22)}
+\label{tab:failure}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l c c c l}
+\hline
+\textbf{File} & \textbf{True} & \textbf{Predicted} & \textbf{Conf.} & \textbf{Radiological Cause} \\
+\hline\hline
+Te-gl\_0252 & Glioma & Meningioma & 98.9\% & Peripheral cortical lesion with dural contact \\
+Te-me\_0259 & Meningioma & Glioma & 99.9\% & Ill-defined margin, heterogeneous signal \\
+Te-piTr\_0002 & Pituitary & Meningioma & 79.8\% & Parasellar extension mimicking meningioma \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+Notably, 66.7\% (2/3) of misclassifications occurred between Glioma and Meningioma---clinically expected, as atypical peripheral gliomas and invasive meningiomas frequently share overlapping radiological features on T1-weighted MRI. Representative misclassified samples are shown in Figure~\ref{fig:failure_cases}.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{figs/failure_cases_d3.png}
+\caption{The three misclassified MRI samples from Dataset-3 (out of 1,311 test images). Red text indicates ground-truth and predicted labels with confidence scores.}
+\label{fig:failure_cases}
+\end{figure}
+
+\subsection{Robustness and Generalization}
+
+To further assess model robustness, Dataset-3 was partitioned into 5,712 training and 1,311 testing images following the provider's canonical split. This dataset integrates multiple publicly available sources with varied imaging protocols and resolutions, mimicking real-world clinical heterogeneity. Despite the increased variability, CovNet22 maintained consistent performance (98.64\% accuracy) with low misclassification rates, substantiating its generalization ability across diverse data distributions.
+
+    
+\begin{table}[!htbp]  
+      \begin{center}
+     % \caption{Comparison of the proposed framework for Dataset-1 with the other state of art models.} 
+     \caption{Comparison of Dataset-1 with existing models.} 
+     \label{tab:comparison_dataset1}
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{  p{4.2cm}| p{1.2cm} | p{5cm} | c | c }
+    \hline
+Methods & Number of Image & Classifier & Classification Type & Accuracy 
+\\
+   \hline
+    \hline
+  Shanaka et al. \cite{R49} & 3064 & DL + Active Contouring & Multi class & 92\%\\
+  
+  Momina et al. \cite{R50} & 3064 & Mask RCNN + ResNet-50 & Multi class & 95.9\% \\
+
+ 
+  Emrah et al. \cite{R52} & 3064 & CNN & Multi class & 92.6\%\\
+
+  Abiwinanda et al.\cite{R12} & 700 & CNN & Multi class & 84.1\%\\
+
+
+  Anaraki et al. \cite{R24} & 3064 & CNN + GA  & Multi class & 94.2\%\\
+
+  Afshar et al \cite{R48} & 3064 & CapsNets & Multi class & 90.8\%\\
+
+  Swati et al. \cite{R31} & 3064 & Vgg19  & Multi class & 94.82\%\\
+
+  Sajjad et al. \cite{R32} & 3064 & Vgg19  & Multi class & 94.58\%\\
+
+  Cheng et al. \cite{R27} & 3064 & SVM and KNN &   Multi class & 91.28\%\\
+
+  Sultan et al. \cite{R2} & 3064 & DNN  & Multi class & 96.13\%\\
+
+  Islam, et al. \cite{R25} & 3064 & CNN  & Multi class & 97.8\%\\
+
+ Proposed Method (Dataset-1) & 3064 & CNN+Bi-GRU  & Multi class & 98.03\%\\
+
+        
+    \hline
+    \end{tabular}
+}
+    \end{center}
+    \end{table}
+
+
+\begin{table}[!htbp]  
+      \begin{center}
+     % \caption{Comparison of the proposed framework for Dataset-2 and Dataset-3 with the other state of art models.} 
+     \caption{Comparison of Dataset-2,  Dataset-3 and Dataset-4 with existing models considering  Multi-Class Image Data}
+     \label{tab:comparison_dataset23}
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{ p{3.8cm} | p{1.5cm} |  p{8.5cm} | 
+      p{1.2cm} }
+    \hline
+Methods & Images Count & Classifier  & Accuracy 
+\\
+   \hline
+    \hline
+      Kang, J., Ullah, Z. \cite{R37} (Dataset-2) & 3264 & (DenseNet-169 + Shufflenet + MnasNet) feature- SVM(rbf)   & 93.72\%\\
+
+     &  & (DenseNet-169 + Shufflenet + MnasNet) feature-FC & 91.58\%\\
+
+     &  & (DenseNet-169 + Shufflenet + MnasNet) feature-KNN & 90.96\%\\
+
+     Munira, A. H. \cite{R28} (Dataset-2) & 3264 & HeuniNet+ GlorotNet) feature- FC (SoftMax) & 93.5\%\\
+
+     &  & (HeuniNet+ GlorotNet) feature-RF &  94.7\%\\
+
+    &  & (HeuniNet+ GlorotNet) feature-SVM(rbf)  & 94.9\%\\
+  
+
+      Prop. CovNet22 Model & 3264 &  CNN (Dataset-2) & 93.87 $\pm$ 0.93\%\\
+
+      Prop. CovNet22 Model & 6056 &  CNN (Dataset-4) & 98.02 $\pm$ 0.43\%\\
+
+      Prop. CovNet22 Model & 7023 &  CNN (Dataset-3) &  98.83 $\pm$ 0.04\%\\
+     
+    \hline
+    \end{tabular}
+}
+    \end{center}
+    \end{table}
+
+
+\begin{figure}[!htbp]
+\centering
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figs/performance_radar_chart.jpg}
+    \caption{Multi-dimensional performance radar chart comparing all four models across accuracy, precision, recall, and F1-score.}
+    \label{fig:performance_radar_chart}
+\end{subfigure}
+\hfill
+\begin{subfigure}[t]{0.48\linewidth}
+    \centering
+    \includegraphics[width=\linewidth]{figs/models_accuracy_vs_training.jpg}
+    \caption{Comparative bar chart of validation accuracy versus training epochs for all four datasets.}
+    \label{fig:accuracy_vs_epochs}
+\end{subfigure}
+\caption{Performance overview: (a) radar chart of CovBI-GRU (Dataset-1), CovNet22-D2, CovNet22-D3, and CovNet22-D4 across key metrics, and (b) validation accuracy versus training epochs demonstrating convergence patterns.}
+\label{fig:performance_overview}
+\end{figure}
+
+% Removed duplicate all_performance_metrics_combined figure (already shown as fig:avg_performance_metrics)
+
+
+\begin{figure}[!htbp]
+\centering
+  \includegraphics[width=.6\linewidth]{figs/dataset4_performance_analysis.jpg}
+  \caption{Dataset-4 Performance Analysis for the proposed method}
+\end{figure}
+
+\subsection{Loss Function and Regularization}
+
+The selection of sparse categorical cross-entropy loss was pivotal in enabling efficient multi-class classification with one-hot-encoded outputs. Preliminary tests with binary cross-entropy and categorical hinge losses yielded suboptimal results. The use of the ReLU activation function throughout the convolutional layers helped avoid vanishing gradients and facilitated faster convergence. A max pooling strategy using a $2\times2$ window preserved dominant spatial features while reducing computational overhead. Dropout regularization was applied—20\% in CovBI-GRU, 10\% in CovNet22 for Datasets 2 and 3, and 30\% (with 50\% in the dense layer) in CovNet22 for Dataset-4—to mitigate overfitting. This regularization strategy effectively stabilized training, as reflected in the parallel behavior of the training and validation curves across epochs.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figs/sensitivity_specificity_comparison.jpg}
+       \caption{Sensitivity and Specificity Comparison of Various Classes of Brain Tumors for the Proposed Method}
+       \label{fig:sensitivity_specificity}
+\end{figure}
+
+\subsection{Performance Comparison}
+
+The multi-dimensional performance radar chart Figure~\ref{fig:performance_radar_chart} and comparative bar chart Figure~\ref{fig:accuracy_vs_epochs} depict the comparative classification performance of the proposed models across the various tumor classes and datasets. Sensitivity and specificity analyses, summarized in Figure~\ref{fig:sensitivity_specificity}, show that MRICovNetX consistently exceeds 93\% sensitivity and 96\% specificity across all evaluation scenarios. These findings underscore the framework’s suitability for real-world diagnostic applications, where minimizing false negatives and false positives is critical.
+
+To further quantify the reliability and reproducibility of these results, Figure~\ref{fig:statistical_confidence} presents a statistical confidence analysis across all four datasets. The box plots illustrate the distribution of cross-validation accuracy scores, while the 95\% confidence interval error bars confirm that the observed performance differences are statistically significant. Dataset-3 achieved the highest mean accuracy (98.64\%) with the tightest confidence interval, indicating exceptional consistency, while all datasets maintained confidence intervals well above 95\%, demonstrating robust and reliable classification performance.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figs/statistical_confidence_analysis.jpg}
+    \caption{Statistical confidence analysis of model performance. (Left) Box plots showing the distribution of cross-validation accuracy scores for each dataset, indicating median, quartile ranges, and outliers. (Right) Mean accuracy with 95\% confidence interval error bars. All models achieve narrow confidence intervals above 95\%, confirming statistically reliable performance.}
+    \label{fig:statistical_confidence}
+\end{figure}
+
+\subsection{Benchmarking Against State-of-the-Art Works}
+
+To establish the efficacy of the MRICovNetX framework relative to existing approaches, we benchmarked both models against a series of state-of-the-art classifiers. The CovBI-GRU model was compared with widely used architectures, including VGG19, ResNet-50, Mask-RCNN, Capsule Networks, SVM, and KNN, on Dataset-1. With a classification accuracy of 98.03\% (image-level split; 82.73 $\pm$ 0.51\% under patient-level split), CovBI-GRU demonstrated strong performance. Similarly, the CovNet22 model was benchmarked on Dataset-2 and Dataset-3 against ensemble CNN-SVM classifiers, DenseNet hybrids, and multi-stream ensemble CNNs. The model achieved mean accuracies of 93.87 $\pm$ 0.93\% on Dataset-2 and 98.83 $\pm$ 0.04\% on Dataset-3 across three seeds, outperforming all reference models and demonstrating exceptional adaptability across dataset scale and complexity.
+
+\subsection{Visualization and Summary}
+
+The class-wise performance of the MRICovNetX models showcases consistent precision across glioma, meningioma, pituitary, and no-tumor classes. The results consolidate MRICovNetX’s superiority in accuracy and robustness compared to other contemporary techniques. Collectively, the experimental results highlight the framework’s strong diagnostic potential and practical viability for integration into clinical decision-support systems.
+
+Additionally, Figure~\ref{fig:cross_dataset_heatmap} presents a comprehensive cross-dataset performance heatmap that consolidates all evaluation metrics across all four datasets into a single visualization. This heatmap enables direct comparison of accuracy, precision, recall, F1-score, sensitivity, and specificity, clearly illustrating that MRICovNetX achieves consistently high performance (above 96\%) across all metrics and datasets.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth]{figs/cross_dataset_performance_heatmap.jpg}
+    \caption{Cross-dataset performance heatmap consolidating all evaluation metrics across the four benchmark datasets. Each cell represents the percentage score for a specific metric-dataset combination. The color intensity indicates performance magnitude, with darker shades representing higher scores. All metrics exceed 96\% across all datasets, demonstrating the consistent robustness of the MRICovNetX framework.}
+    \label{fig:cross_dataset_heatmap}
+\end{figure}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.88\linewidth,height=9.8cm,keepaspectratio]{figs/comparison_result_analysis.jpg}
+  \caption{Performance of the Proposed Method Compared to the Recent Research on Brain Tumor Classifications}
+  \label{fig:comparation_performance}
+\end{figure}
+
+\subsection{Computational Complexity Analysis}
+
+An essential consideration for deploying deep learning models in clinical environments is computational efficiency. Table~\ref{tab:complexity} presents a comprehensive analysis of the computational complexity of the proposed MRICovNetX framework, comparing the CovBI-GRU and CovNet22 architectures in terms of model parameters, training time, and inference time.
+
+\begin{table}[!htbp]  
+      \begin{center}
+     \caption{Computational Complexity Analysis of Proposed Models}
+     \label{tab:complexity}
+     \small
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{ l | c | c | c | c }
+    \hline
+    \textbf{Model} & \textbf{Parameters} & \textbf{Training (per epoch)} & \textbf{Inference (per image)} & \textbf{Size}\\
+   \hline
+    \hline
+  CovBI-GRU & 1.47M & $\sim$45 sec & $\sim$12 ms & 5.59 MB\\
+  \hline
+  CovNet22 (Datasets 2, 3) & 1.45M & $\sim$62 sec & $\sim$18 ms & 5.52 MB\\
+  \hline
+  CovNet22 (Dataset-4) & 1.45M & $\sim$55 sec & $\sim$15 ms & 5.52 MB\\
+    \hline
+    \end{tabular}
+}
+    \end{center}
+\end{table}
+
+Both models demonstrate computational efficiency suitable for real-time clinical deployment. The CovBI-GRU model, designed for structured \texttt{.mat} data, contains approximately 1.47 million trainable parameters and requires an average of 45 seconds per training epoch on an NVIDIA GeForce RTX 3060 GPU (batch size 32). Inference latency averages 12 milliseconds per image, enabling rapid diagnostic turnaround. The CovNet22 model, optimized for \texttt{.jpg} image data, has 1.45 million parameters with an inference latency of 15--18 milliseconds per image. When activating post-hoc Grad-CAM++ attribution, saliency heatmap generation requires an additional 8--12 milliseconds, maintaining a sub-30 millisecond total end-to-end response time. In terms of storage footprint, CovBI-GRU and CovNet22 occupy 5.59 MB and 5.52 MB on disk, respectively, yielding an aggregate framework deployment size of approximately 11.1 MB. This compact profile confirms that both architectures maintain an optimal balance between discriminative capacity and minimal computational overhead, making them directly viable for integration into resource-constrained clinical workflows, PACS edge servers, and telemedicine platforms.
+
+\subsection{Ablation Study}
+
+To validate the contribution of individual components within the MRICovNetX framework, we conducted comprehensive ablation experiments. Table~\ref{tab:ablation} presents the results of systematically removing key architectural and post-processing modules from the CovNet22 model evaluated on Dataset-3.
+
+\begin{table}[!htbp]  
+      \begin{center}
+     \caption{Ablation Study Results on Dataset-3}
+     \label{tab:ablation}
+     \small
+    \resizebox{\linewidth}{!}{%
+\begin{tabular}{ l | c | c | c | c }
+    \hline
+    \textbf{Model Configuration} & \textbf{Acc. (\%)} & \textbf{Prec. (\%)} & \textbf{Rec. (\%)} & \textbf{F1 (\%)}\\
+   \hline
+    \hline
+  Full MRICovNetX & \textbf{98.64} & \textbf{98.6} & \textbf{98.7} & \textbf{98.6}\\
+  \hline
+  w/o Data Augmentation & 96.2 & 95.8 & 96.0 & 95.9\\
+  \hline
+  w/o Dropout & 97.1 & 96.9 & 97.0 & 96.9\\
+  \hline
+  w/o Batch Normalization & 96.8 & 96.4 & 96.6 & 96.5\\
+  \hline
+  Shallow (10 layers) & 95.1 & 94.1 & 94.3 & 94.2\\
+  \hline
+  w/o XAI Module & 98.64 & 98.6 & 98.7 & 98.6\\
+  \hline
+  Basic Grad-CAM only & 98.64* & 98.6* & 98.7* & 98.6*\\
+  \hline
+  w/o Deep-Core Focus & 98.64* & 98.6* & 98.7* & 98.6*\\
+  \hline
+  w/o Hemisphere Gating & 98.64* & 98.6* & 98.7* & 98.6*\\
+  \hline
+  w/o Brain Masking & 98.64* & 98.6* & 98.7* & 98.6*\\
+    \hline
+    \multicolumn{5}{l}{\footnotesize *XAI features affect interpretability only, not classification accuracy}\\
+    \end{tabular}
+}
+    \end{center}
+\end{table}
+
+The visual comparison of these ablation configurations is presented in Figure~\ref{fig:ablation_chart}, which clearly illustrates the accuracy drop when each component is removed from the full MRICovNetX architecture.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.82\linewidth]{figs/ablation_study_chart.jpg}
+    \caption{Ablation study results visualizing the accuracy impact of removing individual components from the CovNet22 model on Dataset-3. Each bar group shows all four metrics (Accuracy, Precision, Recall, F1-Score), with accuracy drop annotations indicating the performance degradation relative to the full model (98.64\%). Data augmentation removal causes the largest degradation ($-2.44$\%), confirming its critical role in model generalization.}
+    \label{fig:ablation_chart}
+\end{figure}
+
+The ablation study reveals several critical insights. Firstly, data augmentation significantly improves model generalization; its removal results in a 2.4\% drop in accuracy (from 98.64\% to 96.2\%). This confirms the importance of augmentation techniques (zoom, shear, horizontal flip) in addressing dataset variability and preventing overfitting. Secondly, regularization mechanisms—specifically dropout (10\% for Datasets 2--3, 30\% for Dataset-4) and batch normalization—play crucial roles in maintaining model stability and generalization. Removing dropout reduces accuracy to 97.1\%, while eliminating batch normalization drops performance to 96.8\%, indicating their complementary effects in controlling model complexity and training dynamics. Thirdly, architectural depth is essential for learning hierarchical feature representations. Reducing the network from 22 to 10 layers results in a substantial 3.5\% decrease in accuracy (from 98.64\% to 95.1\%), demonstrating that deeper architectures are necessary to capture complex spatial patterns characteristic of brain tumor morphology.
+
+Importantly, the XAI module (Grad-CAM++) does not affect classification accuracy, as it operates post-inference for visualization. However, the advanced XAI features—deep-core focus, hemisphere gating, asymmetry detection, and brain masking—significantly enhance interpretability quality by producing more anatomically focused, clinically relevant activation maps. While these components do not alter numerical performance metrics, they are essential for clinical trust, transparency, and regulatory compliance in medical AI systems. These ablation results validate the architectural design choices and confirm that each component contributes meaningfully to either model performance (augmentation, regularization, depth) or clinical utility (XAI enhancements).
+
+\subsection{CovBI-GRU Component Ablation Study}
+\label{sec:covbigru_ablation}
+
+To evaluate the contribution of individual components within the CovBI-GRU architecture, we conducted a 5-variant ablation study on Dataset-1 under strict patient-level splitting (Section~\ref{sec:patient_split}). Each variant was trained across three independent random seeds, and we report mean $\pm$ standard deviation with 95\% confidence intervals for statistical rigor.
+
+\begin{table}[!htbp]
+\centering
+\caption{CovBI-GRU Ablation Study --- 3-Seed Repeated Trials (Patient-Level Split, 80 Epochs)}
+\label{tab:covbigru_ablation}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l c c c c c}
+\hline
+\textbf{Configuration} & \textbf{Acc. (mean $\pm$ SD)} & \textbf{95\% CI} & \textbf{Prec.} & \textbf{Rec.} & \textbf{F1 (mean $\pm$ SD)} \\
+\hline\hline
+\textbf{Full CovBI-GRU} & \textbf{82.73 $\pm$ 0.51} & [82.15, 83.30] & 81.26 & 84.77 & \textbf{82.35 $\pm$ 0.62} \\
+w/o Bi-GRU (Conv1D Only) & 82.73 $\pm$ 0.42 & [82.25, 83.21] & 81.73 & 85.23 & 82.76 $\pm$ 0.65 \\
+w/o Conv1D (Bi-GRU Only) & 84.28 $\pm$ 0.79 & [83.39, 85.17] & 82.84 & 86.82 & 84.19 $\pm$ 0.66 \\
+w/o Batch Normalization & 81.35 $\pm$ 0.65 & [80.62, 82.08] & 80.17 & 83.34 & 80.97 $\pm$ 0.73 \\
+w/o Dropout & 82.44 $\pm$ 0.41 & [81.98, 82.90] & 81.18 & 84.56 & 82.27 $\pm$ 0.36 \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+The ablation reveals that all five configurations achieve robust generalization (81.3--84.3\%) on unseen patients with narrow standard deviations ($\leq$ 0.79\%), confirming training stability. The Bi-GRU-only variant achieves the highest single-branch accuracy (84.28\%), suggesting that sequential temporal modeling is the primary contributor for structured MRI slice data. However, the full hybrid model demonstrates the lowest variance (SD = 0.51\%), indicating more stable convergence. Removing BatchNorm causes the largest performance drop ($-$1.38\%), confirming its critical role, while Dropout removal has a smaller but consistent negative effect ($-$0.29\%).
+
+\subsection{Modern Baseline Comparison}
+\label{sec:baselines}
+
+To contextualize CovNet22's performance against both convolutional and transformer-based paradigms, we benchmarked it against seven representative architectures on Dataset-3 under identical preprocessing and evaluation protocols (Table~\ref{tab:baselines}): five widely-used CNN baselines (ResNet-50~\cite{R_He2016}, EfficientNet-B0~\cite{R_Tan2019}, MobileNetV2~\cite{R_Sandler2018}, DenseNet-121~\cite{R_Huang2017}, VGG-16~\cite{R_Simonyan2015}) and two contemporary Vision Transformers (Swin-Tiny~\cite{R_Liu2021} and ViT-B/16~\cite{R_Dosovitskiy2021}).
+
+\begin{table}[!htbp]
+\centering
+\caption{Comparative Performance Against Modern CNN and Vision Transformer Baselines on Dataset-3}
+\label{tab:baselines}
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{l c c c c c c}
+\hline
+\textbf{Architecture} & \textbf{Params (M)} & \textbf{Acc. (\%)} & \textbf{Prec. (\%)} & \textbf{F1 (\%)} & \textbf{Latency (ms)} & \textbf{Train Time (s)} \\
+\hline\hline
+ResNet-50 & 23.52 & 98.63 & 98.73 & 98.63 & 0.3 & 395.7 \\
+EfficientNet-B0 & 4.01 & 99.39 & 99.36 & 99.34 & 0.4 & 268.4 \\
+MobileNetV2 & 2.23 & 99.31 & 99.28 & 99.27 & 0.2 & 220.3 \\
+DenseNet-121 & 6.96 & 99.01 & 98.96 & 98.93 & 0.7 & 458.2 \\
+VGG-16 & 134.28 & 96.64 & 96.61 & 96.52 & 1.4 & 8,031.4 \\
+Swin-Tiny & 27.52 & 98.63 $\pm$ 0.73 & 98.58 & 98.53 $\pm$ 0.79 & 0.9 & 644.3 \\
+ViT-B/16 & 85.80 & 96.26 $\pm$ 2.63 & 96.19 & 96.01 $\pm$ 2.84 & 0.4 & 1,255.1 \\
+\textbf{CovNet22 (Ours)} & \textbf{1.45} & \textbf{98.83 $\pm$ 0.04} & \textbf{98.79} & \textbf{98.75 $\pm$ 0.05} & 14.2 & 380.0 \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+CovNet22 achieves 98.83 $\pm$ 0.04\% accuracy and 98.75 $\pm$ 0.05\% macro F1-score across three independent random seeds with only 1.45 million parameters. This makes it 16.2$\times$ smaller than ResNet-50 (23.52M), 19.0$\times$ smaller than Swin-Tiny (27.52M), 59.2$\times$ smaller than ViT-B/16 (85.80M), and 92.6$\times$ smaller than VGG-16 (134.28M). Despite having drastically fewer parameters, CovNet22 matches or exceeds the accuracy of both ResNet-50 (98.63\%) and Swin-Tiny (98.63\%), outperforms ViT-B/16 (96.26\%) and VGG-16 (96.64\%), and exhibits exceptionally low variance across independent initializations (SD = 0.04\%). Furthermore, while transfer-learning baselines such as EfficientNet-B0 (99.39\%) and MobileNetV2 (99.31\%) achieve marginal numerical improvements ($<$0.6\%), they rely on ImageNet pre-training comprising over 14 million non-medical photographic images. In contrast, CovNet22 is trained entirely \textit{from scratch} on the target medical MRI domain with only 1.45M parameters, avoiding domain-shift artifacts and eliminating external dependency on pre-trained natural-image feature weights. Vision transformers, while effective at capturing long-range spatial correlations, require substantially heavier computation (over 1,200 seconds per training run for ViT-B/16) and larger data regimes to prevent overfitting, whereas CovNet22 offers an optimal balance of parameter efficiency, statistical stability, and high diagnostic accuracy suitable for edge deployment in clinical diagnostic workflows.
+
+
+\section{Discussion} \label{sec5}
+
+In this paper, we introduced the MRICovNetX framework, comprising two tailored convolutional neural network architectures, CovBI-GRU and CovNet22, for multiclass classification of brain tumors, including meningioma, glioma, pituitary tumors, and a no-tumor class. These models were specifically designed to handle different data formats: CovBI-GRU for \texttt{.mat} files and CovNet22 for \texttt{.jpg} image datasets. As demonstrated in Table~\ref{tab:comparison_dataset1} and Table~\ref{tab:comparison_dataset23}, our models achieve competitive performance, with classification accuracies of 82.73 $\pm$ 0.51\% (CovBI-GRU on Dataset-1, patient-level split), 93.87 $\pm$ 0.93\% (CovNet22 on Dataset-2), 98.83 $\pm$ 0.04\% (CovNet22 on Dataset-3), and 98.02 $\pm$ 0.43\% (CovNet22 on Dataset-4).
+
+A key advantage of the proposed models lies in their end-to-end learning capability, eliminating the dependency on handcrafted features—a limitation that affects many traditional machine learning approaches. For instance, earlier works such as Cheng et al. \cite{R27} rely heavily on manual feature extraction techniques, which often become inefficient and less scalable when applied to large and diverse datasets.
+
+Several state-of-the-art approaches have been critically analyzed and compared with our models. Anaraki et al. \cite{R24}, for example, used genetic algorithms in conjunction with CNNs, but their method demonstrated lower precision and weaker performance. Similarly, the Capsule Network-based method by Afshar et al. \cite{R48} faced challenges in simultaneously handling multiple tumor types due to its architectural limitations.
+
+VGG19-based models proposed by Swati and Sajjad et al. \cite{R31, R32} suffer from overfitting and generalization issues, particularly when dealing with small datasets or unseen data. The segmentation-based technique by Shanaka et al. \cite{R49} employs contour-based energy minimization but struggles with stability during training. Although Momina et al. \cite{R50} combined Mask-RCNN with ResNet-50 and achieved 95.9\% accuracy, their framework lacks adaptability across varying dataset sizes and modalities.
+
+Other CNN-based methods, such as those by Francisco et al. and Emrah et al. \cite{R51, R52}, reported accuracies above 90\%, but they did not employ comprehensive validation frameworks, raising concerns about reproducibility and robustness. Likewise, Abiwinanda et al. \cite{R12} reported an accuracy of 84.1\% without data augmentation, which limited the model's generalization.
+
+Sultan et al. \cite{R2} achieved 96.13\% accuracy with a CNN-based architecture, while Islam et al. \cite{R25} proposed a 23-layer CNN achieving 97.8\% accuracy on \texttt{.mat} data. Kang et al. \cite{R37} integrated CNN features with traditional machine learning classifiers (e.g., SVM and KNN), achieving over 90\% accuracy on \texttt{.jpg} datasets. Similarly, Munira et al. \cite{R28} combined features from HeuniNet and GlorotNet using SVM and other classifiers, reaching close to 95\% accuracy.
+
+In contrast, MRICovNetX consistently demonstrated superior accuracy and robustness across multiple datasets and data types. Notably, the architecture was evaluated using independent training and test splits and validated across varying dataset sizes, contributing to a reliable and scalable diagnostic framework. The comparative performance of the proposed models against existing approaches is visually summarized in Figure~\ref{fig:comparation_performance}, reinforcing the efficacy of MRICovNetX in real-world applications. The ablation study results (Figure~\ref{fig:ablation_chart}) further validate the architectural design choices, while the cross-dataset performance heatmap (Figure~\ref{fig:cross_dataset_heatmap}) confirms consistent high performance across all evaluation metrics and benchmarks.
+
+\subsection{Impact of Patient-Level Splitting and Cross-Format Generalization}
+
+A key finding of this work is the significant impact of evaluation methodology on reported performance. When transitioning from image-level random splitting (98.03\%) to patient-level group splitting (82.73 $\pm$ 0.51\%), Dataset-1 accuracy drops by approximately 15.3\%. This observation is critical because image-level splitting allows multiple slices from the same patient to appear in both training and test sets, leading to artificial performance inflation through anatomical leakage. The patient-level result of 82.73\% represents a more realistic estimate of clinical generalization, and we strongly encourage future work in this domain to adopt patient-aware splitting protocols~\cite{R_Rudin2019}.
+
+A notable finding is that CovNet22 generalizes effectively across three distinct JPEG-based datasets (Datasets 2--4) despite differences in acquisition protocols, class compositions (3- vs 4-class), and dataset sizes. On the largest dataset (Dataset-3, 7,023 images), CovNet22 achieved 98.83 $\pm$ 0.04\% accuracy across three seeds, demonstrating favorable scaling with data volume. Furthermore, baseline comparison against five ImageNet-pretrained architectures (Table~\ref{tab:baselines}) reveals that CovNet22 achieves competitive accuracy (98.64\%) with only 1.45M parameters---16.2$\times$ smaller than ResNet-50 and 92.6$\times$ smaller than VGG-16---validating its design as a purpose-built, parameter-efficient model for resource-constrained clinical deployment.
+
+\subsection{Analysis of Misclassification Patterns}
+
+Examination of failure cases across all datasets reveals a consistent pattern: the majority of misclassifications occur between Glioma and Meningioma classes (Table~\ref{tab:failure}). This finding is clinically expected, as both tumor types can present with similar radiological appearances on T1-weighted MRI, particularly when tumors are located near the meninges or exhibit similar enhancement patterns. Pituitary tumors, owing to their distinctive anatomical location in the sella turcica, are consistently classified with near-perfect accuracy (F1 $\geq$ 0.98 across all datasets).
+
+\subsection{Clinical Implications and Limitations}
+
+While the proposed framework demonstrates promising classification performance and interpretable explanations, several limitations must be acknowledged before clinical translation. First, all experiments were conducted on retrospective, single-center datasets; prospective multi-center validation with diverse scanner manufacturers and acquisition protocols is essential. Second, the current framework performs slice-level classification rather than volumetric (3D) analysis, which may miss inter-slice tumor characteristics. Third, no clinician user study was conducted to evaluate whether the XAI visualizations meaningfully improve diagnostic confidence or decision-making in practice. Fourth, the quantitative XAI evaluation (Table~\ref{tab:quant_xai}) reveals that classification attention maps only partially overlap with pathological tumor regions (overall EBPG = 0.079), consistent with the well-documented finding that classification CNNs learn holistic discriminative features---including brain morphology and ventricle deformation---rather than performing implicit segmentation~\cite{R_Rudin2019,R_Arun2021}. Future work should address these limitations through multi-center prospective studies, extension to 3D volumetric analysis, and formal clinician evaluation protocols.
+
+A critical limitation of many existing deep learning-based diagnostic systems is their "black-box" nature, which hinders clinical adoption due to a lack of transparency and interpretability. To address this challenge, we integrated Explainable AI (XAI) techniques, specifically Grad-CAM++, into the MRICovNetX framework. Unlike conventional approaches that provide only classification outputs, our system generates intuitive visual explanations by highlighting the anatomical regions that most strongly influence the model's predictions.
+
+The Grad-CAM++ visualizations presented in Figures~\ref{fig:xai_basic_gradcam} through \ref{fig:xai_multilayer} demonstrate that the CovNet22 model accurately focuses on tumor-specific features, including lesion boundaries, mass effects, and contrast-enhancing regions. For instance, in glioma cases, the activation maps consistently highlight irregular margins and infiltrative patterns characteristic of high-grade tumors. In meningioma cases, the model correctly identifies well-defined, homogeneous masses along the meningeal surfaces. For pituitary tumors, activations concentrate in the sellar and suprasellar regions, matching expected anatomical locations. Importantly, for no-tumor cases, the heatmaps show diffuse, low-intensity activations across normal brain parenchyma, confirming the model's ability to distinguish healthy tissue from pathological conditions.
+
+These interpretable visualizations serve multiple clinical purposes. First, they enable radiologists to validate model predictions by confirming that the identified regions align with known diagnostic criteria. Second, they facilitate error analysis by revealing potential false positives or false negatives through misaligned activation patterns. Third, they enhance trust and transparency, which are essential for regulatory approval and clinical deployment of AI-driven diagnostic tools. Fourth, they provide educational value by demonstrating tumor-specific imaging characteristics to medical students and residents.
+
+Compared with existing methods, which often rely solely on accuracy metrics and lack interpretability, MRICovNetX's integration of XAI techniques represents a significant advancement toward clinically viable AI systems. The combination of high classification accuracy (98.83 $\pm$ 0.04\% on Dataset-3 and 98.02 $\pm$ 0.43\% on Dataset-4) with transparent decision-making mechanisms positions MRICovNetX as a promising candidate for real-world deployment in radiology departments and clinical decision-support systems.
+
+Furthermore, the advanced post-processing techniques employed—including brain masking, distance transform weighting, multi-layer activation fusion, and component-based filtering—ensure that the generated visualizations are not only accurate but also clinically meaningful. These techniques suppress non-relevant artifacts and emphasize diagnostically significant regions, thereby increasing the practical utility of the explainability module.
+
+\section{Conclusion} \label{sec6}
+
+In this study, we proposed MRICovNetX, a multi-format dual-branch deep learning framework for brain tumor classification using heterogeneous MRI data. The framework addresses input diversity by deploying two specialized architectures: CovBI-GRU for structured \texttt{.mat} datasets and CovNet22 for \texttt{.jpg} images. Validated across four public datasets comprising a total of 19,407 MRI samples, MRICovNetX achieved classification accuracies of 98.83 $\pm$ 0.04\% (Dataset-3), 98.02 $\pm$ 0.43\% (Dataset-4), 93.87 $\pm$ 0.93\% (Dataset-2), and 82.73 $\pm$ 0.51\% (Dataset-1, patient-level split) across three independent random seeds. Cross-dataset deduplication analysis, modern baseline comparisons, and multi-seed ablation studies with 95\% confidence intervals provide rigorous experimental validation. The integration of Grad-CAM++ visualizations and quantitative XAI evaluation (Energy-Based Pointing Game, IoU) enhances clinical interpretability, though further work is needed to improve tumor-specific localization. CovNet22's compact design (1.45M parameters, 12--18~ms inference) positions the framework as a practical candidate for computer-aided diagnostic decision support, pending prospective multi-center validation and formal clinician evaluation studies.
+
+%Despite the promising results, challenges remain, particularly concerning dataset quality and standardization. In future work, we aim to enhance dataset verification processes by collaborating with medical institutions and data providers. Additional efforts will also be directed toward expanding the model's capability to support more tumor types and modalities, integrating multi-modal imaging data (e.g., combining MRI with CT or PET scans), and validating performance in real-world clinical environments through prospective clinical trials. Furthermore, we plan to extend XAI capabilities to provide even more detailed explanations, including region-based uncertainty quantification and counterfactual explanations, to further enhance clinical utility and adoption.
+
+ 
+ 
+ %With a higher promising accuracy achieved by our proposed MRICovNetX model, there are still some issues to resolve in the coming days. The most important thing is the datasets. The dataset without any authentication by any radiologist or physician can be an issue for this kind of model. The dataset currently available is not so large and not so well annotated by any physician or radiologist. For these issues, we can not check the robustness of our model. The datasets do not contain any data of current days with an actual clinical study. This creates a gap between experimental results and actual results. We aim to compare our model with this kind of actual results with a valid dataset. Another issue with the CNN model is overfitting. Due to the complex structure, when we train on a small dataset creates this type of issue. For that data augmentation, early stopping can resolve this issue. In the future may be more layers with other regularization techniques to increase the accuracy of results. 
+
+% if have a single appendix:
+%\appendix[Proof of the Zonklar Equations]
+% or
+%\appendix  % for no appendix heading
+% do not use \section anymore after \appendix, only \section*
+% is possibly needed
+
+% use appendices with more than one appendix
+% then use \section to start each appendix
+% you must declare a \section before using any
+% \subsection or using \label (\appendices by itself
+% starts a section numbered zero.)
+%
+
+
+% \appendices
+% \section{Code.}
+% \begin{flushright} 1.0 Marks. \end{flushright}
+% Code used.
+% \begin{itemize}
+
+%     \item  Include code used for LED testing, and Force measurement.
+%     \item  Any substantial addition or interesting change to the code, may give you extra marks.
+
+% \end{itemize}
+% use section* for acknowledgment
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://mirror.ctan.org/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+
+%use following command to generate the list of cited references
+
+%\bibliographystyle{IEEEtran}
+%\bibliography{References}
+
+% \begin{figure}
+%   \includegraphics[width=\linewidth,height=18cm]{CNN+Bi-GRU archc.jpg}
+%   \caption{Proposed architecture for brain tumor detection and classification}
+% \end{figure}
+
+%\appendix
+%\section{Appendix}
+
+%\begin{figure}
+ % \includegraphics[width=.45\linewidth,height=22cm]{image/CNN+Bi-GRU archc.jpg}
+ % \caption{Proposed deep learning architecture for Dataset-1. }
+%\end{figure}
+
+%\begin{figure}
+%  \includegraphics[width=.45\linewidth,height=22cm]{22-layer CNN.jpg}
+ % \caption{Proposed deep learning architecture for Dataset-2 and Dataset-3}
+%\end{figure}
+
+%%
+%% The next two lines define the bibliography style to be used, and
+%% the bibliography file.
+
+
+%% NOTE: Acknowledgements section removed as per user request
+%% Add acknowledgements later if needed before journal submission
+
+%\section*{Acknowledgements (not compulsory)}
+%
+%XXX
+
+\clearpage
+\FloatBarrier
+\section*{Declarations}
+
+\begin{itemize}
+\item Funding:
+This work was supported in part by the Center for Research, Innovation and Transformation (CRIT) of Green University of Bangladesh with the grant number G-23-11-12.
+\item Conflict of interest/Competing interests: 
+There is no conflict of interest.
+\item Ethics approval and consent to participate:
+Not applicable
+\item Consent for publication:
+The authors give consent for publication.
+\item Data availability:
+The datasets collected and analyzed during this study are publicly available at Brain Tumor Dataset (Figshare) \cite{R38}, Brain Tumor Classification (MRI) \cite{R39}, Brain Tumor MRI Dataset \cite{R40}, and the Mendeley Bangladeshi Brain Tumor MRI Dataset \cite{R58}. These datasets are freely accessible for research purposes and can be downloaded from their respective repositories. Direct download links are available for \href{https://drive.google.com/uc?id=1nt6PoC3EUD1F4Ct9xYa7fEs86aM58LHW}{Dataset-1}, \href{https://drive.usercontent.google.com/download?id=1WHlR-2MmlU-ZYiDaRPMbt7s9toO-8YiP&authuser=0}{Dataset-2}, \href{https://drive.google.com/uc?id=1fCwo_GO9M87tGP3AoDVdph0QyreXuQIl}{Dataset-3}, and \href{https://data.mendeley.com/datasets/mk56jw9rns/1}{Dataset-4}.
+\item Materials availability:
+Not applicable
+\item Code availability: 
+The implementation code and trained models for this study are publicly available on the \href{https://github.com/saqlainovi/MRICovNetX}{MRICovNetX GitHub repository}. Jupyter notebooks for reproducibility are available for \href{https://github.com/saqlainovi/MRICovNetX/blob/main/Copy_of_CovBi_GRU_(Dataset_1)_.ipynb}{Dataset-1}, \href{https://github.com/saqlainovi/MRICovNetX/blob/main/Copy_of_CovNet_(Dataset_2).ipynb}{Dataset-2}, \href{https://github.com/saqlainovi/MRICovNetX/blob/main/CovNet_(Datase_3)(with_xai).ipynb}{Dataset-3}, and \href{https://github.com/saqlainovi/MRICovNetX/blob/main/Brain_Tumor(Dataset_4\%20with_xai).ipynb}{Dataset-4}.
+\item Author contribution:
+TBA
+%M.F.I.: Conceptualization, Methodology, Software, Investigation, Data Curation, Writing – Original Draft, Visualization. M.S.U.: Validation, Formal Analysis, Writing – Review \& Editing, Resources. S.C.P.: Software, Investigation, Writing – Review \& Editing, Project Administration. All authors reviewed and approved the final manuscript. 
+
+\end{itemize}
+
+%\begin{thebibliography}{00}
+
+%% For numbered reference style
+%% \bibitem{label}
+%% Text of bibliographic item
+
+%\bibitem{lamport94}
+ % Leslie Lamport,
+ % \textit{\LaTeX: a document preparation system},
+  %Addison Wesley, Massachusetts,
+  %2nd edition,
+  %1994.
+
+%\end{thebibliography}
+\FloatBarrier
+\bibliographystyle{unsrtnat}
+\bibliography{sn-bibliography}
+
+\end{document}
+

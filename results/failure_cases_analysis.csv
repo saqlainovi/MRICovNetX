@@ -1,0 +1,4 @@
+File Name,True Label,Predicted Label,Pred Confidence (%),True Class Probability (%)
+Te-gl_0252.jpg,Glioma,Meningioma,98.88%,1.08%
+Te-me_0259.jpg,Meningioma,Glioma,99.88%,0.10%
+Te-piTr_0002.jpg,Pituitary,Meningioma,79.82%,20.16%

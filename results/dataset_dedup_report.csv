@@ -1,0 +1,7 @@
+Dataset A,Dataset B,Unique Images A,Unique Images B,Exact Hash Overlap,Overlap Percentage (%)
+Dataset-1 (Figshare),Dataset-2 (Kaggle),3051,2829,0,0.00%
+Dataset-1 (Figshare),Dataset-3 (Nickparvar),3051,5910,0,0.00%
+Dataset-1 (Figshare),Dataset-4 (Mendeley),3051,6012,0,0.00%
+Dataset-2 (Kaggle),Dataset-3 (Nickparvar),2829,5910,2122,75.01%
+Dataset-2 (Kaggle),Dataset-4 (Mendeley),2829,6012,0,0.00%
+Dataset-3 (Nickparvar),Dataset-4 (Mendeley),5910,6012,0,0.00%

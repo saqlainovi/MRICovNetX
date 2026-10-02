@@ -1,0 +1,5 @@
+Tumor Class,Samples,EBPG (mean),EBPG (SD),IoU (mean),IoU (SD),Pointing Game (%),Relaxed PG 15px (%)
+Meningioma,125,0.0181,0.0211,0.0180,0.0268,0.0,4.0
+Glioma,333,0.0310,0.0327,0.0335,0.0477,4.8,5.7
+Pituitary,121,0.0044,0.0075,0.0035,0.0104,0.8,0.8
+Overall,579,0.0227,0.0289,0.0239,0.0404,2.9,4.3

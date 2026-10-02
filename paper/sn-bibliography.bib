@@ -1,0 +1,403 @@
+@Article{Abril07', 'Cohen07', 'JCohen96']
+
+@article{Arun2021,
+  author={N. Arun and N. Gaw and P. Singh and K. Chang and M. Aggarwal and B. Chen and K. Hoebel and S. Gupta and J. Patel and M. Gidwani and others},
+  title={Assessing the (un)trustworthiness of saliency maps for localizing abnormalities in medical imaging},
+  journal={Radiology: Artificial Intelligence},
+  volume={3},
+  number={6},
+  pages={e200267},
+  year={2021}
+}
+
+@String{GiornaleMath = "Giorn. Mat." } % didn\'t find in AMS MR.', 'Computer = "{IEEE} Computer" }\n
+
+@article{Guo2021SpatioTemporal,
+  author={K. Guo and Y. Hu and Z. Qian and H. Liu and K. Zhang and Y. Sun and J. Gao and B. Yin},
+  title={Dynamic graph convolution network for traffic forecasting},
+  journal={Journal of Intelligent Transportation Systems},
+  volume={25},
+  number={4},
+  pages={357--371},
+  year={2021}
+}
+
+@inproceedings{He2016ResNet,
+  author={K. He and X. Zhang and S. Ren and J. Sun},
+  title={Deep residual learning for image recognition},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={770--778},
+  year={2016}
+}
+
+@String{HoltRinehartWinston = "Holt', 'Interscience = "Interscience" }\n
+
+@inproceedings{Huang2017DenseNet,
+  author={G. Huang and Z. Liu and L. Van Der Maaten and K. Q. Weinberger},
+  title={Densely connected convolutional networks},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={4700--4708},
+  year={2016}
+}
+
+@String{JSIAMB = "Journal of the Society for Industrial and Applied\n     Mathematics', 'JSIAMB = "J. Soc. Indust. Appl. Math. Ser. B Numer. Anal." }\n
+
+@inproceedings{Kulkarni2026,
+  author={S. V. Kulkarni and V. S. Krushnasamy and S. S. C. Mary and A. Kiran and G. Sajiv and B. K. Bala},
+  title={Edge-Assisted IoT Framework for Real-Time Medical Image Analysis Using Smart Sensors and Federated Deep Learning},
+  booktitle={2026 International Conference on Computing, Communication, Security and Intelligent Systems (IC3SIS)},
+  year={2026},
+  pages={1--6}
+}
+
+@String{QuartMath = "Quarterly Journal of Mathematics', 'QuartMath = "Quart. J. Math. Oxford Ser. (2)" }\n
+
+@ARTICLE{R32,\n    author = {M. Sajjad and S. Khan and K. Muhammad and W. Wu, A. Ullah and S. Baik},\n    title = {Multi-Grade Brain Tumor Classification using Deep CNN with Extensive Data Augmentation},\n    journal = {Journal of Computational Science},\n    volume = {30},\n    number'
+
+@MISC{R54,
+2375:
+
+@MISC{R55,
+2381:
+
+@MISC{R56,
+2387:
+
+@MISC{R57,
+2394:
+
+@MISC{R58,
+    author = {{Mendeley Data}},
+    title = {Brain Tumor {MRI} Image Dataset},
+    year = {2024},
+    url = {https://data.mendeley.com/datasets/mk56jw9rns/1},
+    note = {Mendeley Data}
+}
+
+@article{R_Arun2021,
+2416:     author = {Arun, Nishanth and Gishi, Nathan and Fober, Danielle and Ohno-Machado, Lucila and Pivovarov, Rimma and Suresh, Harini and Gichoya, Judy Wawira and Kuo, Andrew and Peng, Yifan and Ghassemi, Marzyeh},
+2417:     title = {Assessing the Trustworthiness of Saliency Maps for Localizing Abnormalities in Medical Imaging},
+2418:     journal = {Radiology: Artificial Intelligence},
+2419:     volume = {3},
+2420:     number = {6},
+2421:     pages = {e200267},
+2422:     year = {2021},
+2423:     doi = {10.1148/ryai.2021200267}
+2424: }
+2425: 
+2426:
+
+@article{R_CloudCNNTransformer2024,\n    author = {Hassan, Emad and others},\n    title = {A Cloud Enabled Hybrid {CNN} Transformer Framework with Attention Mechanisms for Scalable {Alzheimer's} Disease Staging from Structural {MRI}},\n    journal = {IEEE Journal of Biomedical and Health Informatics},\n    volume = {28},\n    number = {6},\n    pages = {3456--3467},\n    year = {2024}\n}\n\n
+
+@article{R_DataComplexity2024,\n    author = {Prabhu, Sreenivasa and others},\n    title = {Data Complexity Based Evaluation of the Model Dependence of Brain {MRI} Images for Classification of Brain Tumor and {Alzheimer's} Disease},\n    journal = {Computer Methods and Programs in Biomedicine},\n    volume = {245},\n    pages = {108036},\n    year = {2024}\n}\n\n%% Reviewer 4 requested\n
+
+@article{R_DeepMRIAnalysis2024,\n    author = {Raza, Ali and others},\n    title = {Deep Learning-Integrated {MRI} Brain Tumor Analysis: Feature Extraction, Segmentation, and Survival Prediction Using Replicator and Volumetric Networks},\n    journal = {Artificial Intelligence in Medicine},\n    volume = {150},\n    pages = {102834},\n    year = {2024}\n}\n\n
+
+@article{R_Dosovitskiy2021,
+    author = {Dosovitskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and Uszkoreit, Jakob and Houlsby, Neil},
+    title = {An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
+    journal = {International Conference on Learning Representations (ICLR)},
+    pages = {1--21},
+    year = {2021}
+}
+"""
+
+if "R_Sandler2018" not in bib_content:
+    bib_content += new_bib_entries
+    with open(bib_path, 'w', encoding='utf-8') as f:
+        f.write(bib_content)
+    print("Added baseline entries to sn-bibliography.bib")
+else:
+    print("Baseline entries already present in sn-bibliography.bib")
+
+# 2. Update mricovnetx_elsevier_balanced_sc.tex
+tex_path = r"J:\OneDrive\WORK\RECHARCH TEAM\MRICovNetX-main\Paper\overleaf_local\overleaf\mricovnetx_elsevier_balanced_sc.tex"
+with open(tex_path, 'r', encoding='utf-8') as f:
+    tex = f.read()
+
+# Add citations to baseline architectures in Line 1262
+old_line1262 = "five widely-used CNN baselines (ResNet-50, EfficientNet-B0, MobileNetV2, DenseNet-121, VGG-16) and two contemporary Vision Transformers (Swin-Tiny and ViT-B/16)."
+new_line1262 = "five widely-used CNN baselines (ResNet-50~\\cite{R_He2016}, EfficientNet-B0~\\cite{R_Tan2019}, MobileNetV2~\\cite{R_Sandler2018}, DenseNet-121~\\cite{R_Huang2017}, VGG-16~\\cite{R_Simonyan2015}) and two contemporary Vision Transformers (Swin-Tiny~\\cite{R_Liu2021} and ViT-B/16~\\cite{R_Dosovitskiy2021})."
+
+if old_line1262 in tex:
+    tex = tex.replace(old_line1262, new_line1262)
+    print("Updated Line 1262 with baseline citations")
+else:
+    print("Could not find old_line1262")
+
+# Update Table 8 with dagger
+old_t8 = "\\multicolumn{4}{c}{Average Score} & 98.64 & 0.99 & 0.99 & 0.005 & 0.995 & 0.99\\\\"
+new_t8 = "\\multicolumn{4}{c}{Average Score} & 98.64$^\\dagger$ & 0.99 & 0.99 & 0.005 & 0.995 & 0.99\\\\\n\\multicolumn{12}{l}{\\footnotesize $^\\dagger$Representative single-seed confusion matrix (seed=42); multi-seed aggregated mean $\\pm$ SD across three seeds is 98.83 $\\pm$ 0.04\\% (Table~\\ref{tab:comparison_dataset23}).}\\\\"
+
+if old_t8 in tex:
+    tex = tex.replace(old_t8, new_t8)
+    print("Added dagger and footnote to Table 8")
+else:
+    print("Could not find old_t8 in tex")
+
+# Add EfficientNet/MobileNet defense in Section 4.9 analysis
+old_analysis = "Vision transformers, while effective at capturing long-range spatial correlations, require substantially heavier computation (over 1,200 seconds per training run for ViT-B/16) and larger data regimes to prevent overfitting, whereas CovNet22 offers an optimal balance of parameter efficiency, statistical stability, and high diagnostic accuracy suitable for edge deployment in clinical diagnostic workflows."
+new_analysis = """Furthermore, while transfer-learning baselines such as EfficientNet-B0 (99.39\\%) and MobileNetV2 (99.31\\%) achieve marginal numerical improvements ($<$0.6\\%), they rely on ImageNet pre-training comprising over 14 million non-medical photographic images. In contrast, CovNet22 is trained entirely \\textit{from scratch} on the target medical MRI domain with only 1.45M parameters, avoiding domain-shift artifacts and eliminating external dependency on pre-trained natural-image feature weights. Vision transformers, while effective at capturing long-range spatial correlations, require substantially heavier computation (over 1,200 seconds per training run for ViT-B/16) and larger data regimes to prevent overfitting, whereas CovNet22 offers an optimal balance of parameter efficiency, statistical stability, and high diagnostic accuracy suitable for edge deployment in clinical diagnostic workflows."""
+
+if old_analysis in tex:
+    tex = tex.replace(old_analysis, new_analysis)
+    print("Added EfficientNet/MobileNet domain-specific defense in Section 4.9")
+else:
+    print("Could not find old_analysis in tex")
+
+with open(tex_path, 'w', encoding='utf-8') as f:
+    f.write(tex)
+
+print("All updates saved successfully.")
+
+@article{R_DualStage2024,\n    author = {Khan, Muhammad Attique and others},\n    title = {Dual-Stage Deep Learning Framework for Brain Tumor Classification and Localization Using Multimodal {MRI} Scans},\n    journal = {Computers in Biology and Medicine},\n    volume = {175},\n    pages = {108504},\n    year = {2024}\n}\n\n
+
+@article{R_EfficientXAI2024,\n    author = {Ahmad, Bilal and others},\n    title = {Efficient and Compressed Deep Learning Model for Brain Tumour Classification with Explainable {AI} for Smart Healthcare and Information Communication Systems},\n    journal = {IEEE Access},\n    volume = {12},\n    pages = {1--15},\n    year = {2024}\n}\n\n%% Reviewer 3 requested\n
+
+@article{R_He2016,
+    author = {He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+    title = {Deep Residual Learning for Image Recognition},
+    journal = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    pages = {770--778},
+    year = {2016},
+    doi = {10.1109/CVPR.2016.90}
+}
+
+@inproceedings{R_Huang2017,
+    author = {Huang, Gao and Liu, Zhuang and Van Der Maaten, Laurens and Weinberger, Kilian Q.},
+    title = {Densely Connected Convolutional Networks},
+    booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    pages = {4700--4708},
+    year = {2017},
+    doi = {10.1109/CVPR.2017.243}
+}
+
+@inproceedings{R_Liu2021,
+    author = {Liu, Ze and Lin, Yutong and Cao, Yue and Hu, Han and Wei, Yixuan and Zhang, Zheng and Lin, Stephen and Guo, Baining},
+    title = {Swin Transformer: Hierarchical Vision Transformer using Shifted Windows},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    pages = {10012--10022},
+    year = {2021},
+    doi = {10.1109/ICCV48922.2021.00986}
+}
+
+@inproceedings{R_R4_Kulkarni2026,
+-    author = {Kulkarni, S. V. and Krushnasamy, V. S. and Mary, S. S. C. and Kiran, A. and Sajiv, G. and Bala, B. K.},
+-    title = {Edge-Assisted {IoT} Framework for Real-Time Medical Image Analysis Using Smart Sensors and Federated Deep Learning},
+-    booktitle = {2026 Int. Conf. on Computing, Communication, Security and Intelligent Systems (IC3SIS)},
+-    pages = {1--6},
+-    year = {2026},
+-    doi = {10.1109/IC3SIS69949.2026.11608310}
+-}
+-
+-%% Reviewer 5 requested (most relevant ones)
+-
+
+@inproceedings{R_R4_Sajja2025,\n    author = {Sajja, S. L. and Rajab, A. B. and Abdurasul, B. and Kiran, A. and Sajiv, G. and Karthik, M.},\n    title = {Neuromorphic Mechatronic System for Real-Time Robotic Reflex Generation Using Spiking Neural Networks},\n    booktitle = {2025 IEEE 2nd Int. Conf. on Green Industrial Electronics and Sustainable Technologies (GIEST)},\n    pages = {1--5},\n    year = {2025},\n    doi = {10.1109/GIEST66547.2025.11387257}\n}\n\n
+
+@inproceedings{R_R4_Sivakumar2023,\n    author = {Sivakumar, A. and S, L. S. and Suganthy, M. and Gunasundari, B. and Sivamurugan, S. and G, S.},\n    title = {A Robust and Novel 
+<truncated 8965 bytes>
+
+NOTE: The output was truncated because it was too long. Use a more targeted query or a smaller range to get the information you need.
+
+@article{R_R5_AttentionTraffic2021,
+-    author = {Ali, Ahmed and others},
+-    title = {An Attention-Driven Spatio-Temporal Deep Hybrid Neural Networks for Traffic Flow Prediction in Transportation Systems},
+-    journal = {IEEE Transactions on Intelligent Transportation Systems},
+-    volume = {23},
+-    number = {11},
+-    pages = {21623--21634},
+-    year = {2022}
+-}
+-
+-
+
+@article{R_R5_DynMultiGraph2023,
+-    author = {Ali, Ahmed and others},
+-    title = {Dynamic Multi-Graph Spatio-Temporal Learning for Citywide Traffic Flow Prediction},
+-    journal = {Knowledge-Based Systems},
+-    volume = {268},
+-    pages = {110481},
+-    year = {2023}
++    author = {Kujur, Anima and Raza, Zahid and Khan, Arfat Ahmad and Wechtaisong, Chitapong},
++    title = {Data complexity based evaluation of the model dependence of brain {MRI} images for classification of brain tumor and {Alzheimer's} disease},
++    journal = {IEEE Access},
++    volume = {10},
++    pages = {112117--112133},
++    year = {2022},
++    publisher = {IEEE},
++    doi = {10.1109/ACCESS.2022.3216447}
+ }
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+
+@article{R_R5_DynSpatioTemp2019,
+-    author = {Ali, Ahmed and others},
+-    title = {Exploiting Dynamic Spatio-Temporal Graph Convolutional Neural Networks for Citywide Traffic Flows Prediction},
+-    journal = {Neural Networks},
+-    volume = {145},
+-    pages = {233--247},
+-    year = {2022}
+-}
+-
+-
+
+@article{R_Rudin2019,
+2405:     author = {Rudin, Cynthia},
+2406:     title = {Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead},
+2407:     journal = {Nature Machine Intelligence},
+2408:     volume = {1},
+2409:     number = {5},
+2410:     pages = {206--215},
+2411:     year = {2019},
+2412:     doi = {10.1038/s42256-019-0048-x}
+2413: }
+2414: 
+2415:
+
+@inproceedings{R_Sandler2018,
+    author = {Sandler, Mark and Howard, Andrew and Zhu, Menglong and Zhmoginov, Andrey and Chen, Liang-Chieh},
+    title = {{MobileNetV2}: Inverted Residuals and Linear Bottlenecks},
+    booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    pages = {4510--4520},
+    year = {2018},
+    doi = {10.1109/CVPR.2018.00474}
+}
+
+@inproceedings{R_Selvaraju2017,
+2427:     author = {Selvaraju, Ramprasaath R. and Cogswell, Michael and Das, Abhishek and Vedantam, Ramakrishna and Parikh, Devi and Batra, Dhruv},
+2428:     title = {Grad-{CAM}: Visual Explanations from Deep Networks via Gradient-Based Localization},
+2429:     booktitle = {Proceedings of the IEEE International Conference on Computer Vision (ICCV)},
+2430:     pages = {618--626},
+2431:     year = {2017},
+2432:     doi = {10.1109/ICCV.2017.74}
+2433: }
+2434: 
+2435:
+
+@article{R_Simonyan2015,
+    author = {Simonyan, Karen and Zisserman, Andrew},
+    title = {Very Deep Convolutional Networks for Large-Scale Image Recognition},
+    journal = {International Conference on Learning Representations (ICLR)},
+    pages = {1--14},
+    year = {2015}
+}
+
+@article{R_SwinTumor2023,\n    author = {Saeed, Tariq and others},\n    title = {Tumor-{Swin} Transformer Model for Brain Tumor Classification Using {MRI}},\n    journal = {Biomedical Signal Processing and Control},\n    volume = {88},\n    pages = {105679},\n    year = {2024},\n    doi = {10.1016/j.bspc.2023.105679}\n}\n\n
+
+@inproceedings{R_Tan2019,
+    author = {Tan, Mingxing and Le, Quoc V.},
+    title = {{EfficientNet}: Rethinking Model Scaling for Convolutional Neural Networks},
+    booktitle = {Proceedings of the 36th International Conference on Machine Learning (ICML)},
+    pages = {6105--6114},
+    year = {2019}
+}
+
+@article{Rudin2019,
+  author={C. Rudin},
+  title={Stop explaining black box machine learning models for high stakes decisions and use interpretable models instead},
+  journal={Nature Machine Intelligence},
+  volume={1},
+  number={5},
+  pages={206--215},
+  year={2019},
+  publisher={Nature Publishing Group}
+}
+
+@inproceedings{Sajja2025,
+  author={S. L. Sajja and A. B. Rajab and B. Abdurasul and A. Kiran and G. Sajiv and M. Karthik},
+  title={Neuromorphic Mechatronic System for Real-Time Robotic Reflex Generation Using Spiking Neural Networks},
+  booktitle={2025 IEEE 2nd International Conference on Green Industrial Electronics and Sustainable Technologies (GIEST)},
+  year={2025},
+  pages={1--5},
+  doi={10.1109/GIEST66547.2025.11387257}
+}
+
+@inproceedings{Sandler2018MobileNetV2,
+  author={M. Sandler and A. Howard and M. Zhu and A. Zhmoginov and L. C. Chen},
+  title={MobileNetV2: Inverted residuals and linear bottlenecks},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={4510--4520},
+  year={2018}
+}
+
+@article{Simonyan2014VGG,
+  author={K. Simonyan and A. Zisserman},
+  title={Very deep convolutional networks for large-scale image recognition},
+  journal={arXiv preprint arXiv:1409.1556},
+  year={2014}
+}
+
+@inproceedings{Sivakumar2023,
+  author={A. Sivakumar and L. S. S and M. Suganthy and B. Gunasundari and S. Sivamurugan and S. G},
+  title={A Robust and Novel Hybrid Deep Learning based Lung Nodule Identification on CT Scan Images},
+  booktitle={2023 International Conference on Artificial Intelligence and Knowledge Discovery in Concurrent Engineering (ICECONF)},
+  year={2023},
+  pages={1--8},
+  doi={10.1109/ICECONF57129.2023.10083700}
+}
+
+@inproceedings{Tan2019EfficientNet,
+  author={M. Tan and Q. Le},
+  title={EfficientNet: Rethinking model scaling for convolutional neural networks},
+  booktitle={International conference on machine learning},
+  pages={6105--6114},
+  year={2019}
+}
+
+@article{Zheng2020SpatioTemporal,
+  author={C. Zheng and X. Fan and C. Wang and J. Qi},
+  title={GMAN: A graph multi-attention network for traffic prediction},
+  journal={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={34},
+  number={01},
+  pages={1234--1241},
+  year={2020}
+}
+'''
+
+bib_path.write_text(content.strip() + '\n\n' + new_entries.strip() + '\n', encoding='utf-8')
+print('Appended bib entries successfully!')
+"
+
+@article{bib1,
+3:   author		= "Campbell, S. L. and Gear, C. W.",
+4:   title			= "The index of general nonlinear {D}{A}{E}{S}",
+5:   journal		= "Numer. {M}ath.",
+6:   volume		= "72",
+7:   number		= "2",
+8:   pages			= "173--196",
+9:   year			= "1995"
+10: }
+11: 
+12: %% Journal article with DOI
+13:
+
+@article{bib2,
+14:   author		= "Slifka, M. K. and Whitton, J. L.",
+15:   title			= "Clinical implications of dysregulated cytokine production",
+16:   journal		= "J. {M}ol. {M}ed.",
+17:   volume		= "78",
+18:   pages			= "74--80",
+19:   year			= "2000",
+20:   doi			= "10.1007/s001090000086"
+21: }
+22: 
+23: %% Journal article
+24:
+
+@article{bib3,
+25:   author		= "Hamburger, C.",
+26:   title			= "Quasimonotonicity, regularity and duality for nonlinear systems of 
+27: 					partial differential equations",
+28:   journal		= "Ann. Mat. Pura. Appl.",
+29:   volume		= "169",
+30:   number		= "2",
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+
+@type{key, ...}
+                import re
+                entries = re.findall(r'(
+

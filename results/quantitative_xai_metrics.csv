@@ -1,0 +1,5 @@
+Tumor Class,Mean IoU,Pointing Game Accuracy (%),Test Samples
+Meningioma,0.0009,0.00%,125
+Glioma,0.0037,0.00%,333
+Pituitary,0.0000,0.00%,121
+Overall (All Classes),0.0023,0.00%,579

@@ -1,0 +1,5 @@
+Tumor Class,Samples,Mean IoU,IoU SD,Pointing Game (%),PG Hits
+Meningioma,125,0.0180,0.0268,0.00,0/125
+Glioma,333,0.0335,0.0477,4.80,16/333
+Pituitary,121,0.0035,0.0104,0.83,1/121
+Overall,579,0.0239,0.0404,2.94,17/579
