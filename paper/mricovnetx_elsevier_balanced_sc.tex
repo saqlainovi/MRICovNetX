@@ -118,7 +118,7 @@ MRICovNetX leverages variable kernel sizes in CovBI-GRU and consistent kernel si
 \begin{figure}[!htbp]
 \centering
     \includegraphics[width=0.88\linewidth]{figs/mricovnetx_pipeline_diagram.pdf}
-    \caption{End-to-end pipeline of the MRICovNetX framework. The six-stage workflow comprises: (1) multi-source data acquisition from four public datasets, (2) format-specific preprocessing with normalization and augmentation, (3) model selection routing \texttt{.mat} data to CovBI-GRU and \texttt{.jpg} images to CovNet22, (4) deep feature extraction through convolutional and recurrent layers, (5) SoftMax-based multi-class classification, and (6) Grad-CAM++ explainability for clinical interpretability.}
+    \caption{End-to-end pipeline of the MRICovNetX framework (original design schematic; accuracy figures shown in the diagram are from preliminary exploratory runs and differ from the definitive 3-seed results reported in this paper). The six-stage workflow comprises: (1) multi-source data acquisition from four public datasets, (2) format-specific preprocessing with normalization and augmentation, (3) model selection routing \texttt{.mat} data to CovBI-GRU and \texttt{.jpg} images to CovNet22, (4) deep feature extraction through convolutional and recurrent layers, (5) SoftMax-based multi-class classification, and (6) Grad-CAM++ explainability for clinical interpretability.}
     \label{fig:mricovnetx_framework}
 \end{figure}
 
@@ -250,7 +250,7 @@ The analysis reveals that Dataset-2 and Dataset-3 share 75.01\% of their images 
 \subsection{Patient-Level Data Splitting}
 \label{sec:patient_split}
 
-Dataset-1 (Figshare) provides patient identifiers (\texttt{cjdata/PID}) embedded within each \texttt{.mat} file, enabling patient-level stratification. We extracted unique patient IDs from all 3,064 slices, identifying 232 unique subjects. Using \texttt{GroupShuffleSplit} with an 80:20 ratio, we partitioned the data into 185 training patients (2,470 slices) and 47 testing patients (579 slices), ensuring \textbf{zero patient overlap} between partitions. Table~\ref{tab:patient_split} compares the two splitting protocols.
+Dataset-1 (Figshare) provides patient identifiers (\texttt{cjdata/PID}) embedded within each \texttt{.mat} file, enabling patient-level stratification. We extracted unique patient IDs from all 3,064 slices, identifying 232 unique subjects\footnote{Of the 3,064 slices, 15 with non-standard dimensions were excluded during preprocessing, yielding 3,049 usable slices (2,470 training + 579 testing). The original Figshare description reports 233 patients; one patient ID appears only in the excluded slices.}. Using \texttt{GroupShuffleSplit} with an 80:20 ratio, we partitioned the data into 185 training patients (2,470 slices) and 47 testing patients (579 slices), ensuring \textbf{zero patient overlap} between partitions. Table~\ref{tab:patient_split} compares the two splitting protocols.
 
 \begin{table}[!htbp]
 \centering
@@ -470,8 +470,9 @@ ReLU activation is applied after each convolutional layer to address the vanishi
 \centering
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{ALL IMGS/again/dataset 1.pdf}
-    \caption{Dataset-1 (image-level split of the original notebook): 610 of 3,064 \texttt{.mat} test samples — meningioma (23.11\%), glioma (45.74\%), pituitary (31.15\%).}
+    % \includegraphics[width=\linewidth]{ALL IMGS/again/dataset 1.pdf}  % Original notebook figure â€” see Dataset-1 notebook for reproduction
+    \fbox{\parbox{0.9\linewidth}{\centering\small Dataset-1 class distribution from original CovBI-GRU notebook (image-level split). See supplementary notebook for figure.}}
+    \caption{Dataset-1 (image-level split of the original notebook): 613 of 3,064 \texttt{.mat} test samples — meningioma (23.11\%), glioma (45.74\%), pituitary (31.15\%).}
     \label{fig:dataset1_distribution}
 \end{subfigure}
 \hfill
@@ -590,7 +591,7 @@ To further validate the generalizability of the CovNet22 architecture, we evalua
 
 \begin{figure}[!htbp]
 \centering
-  \includegraphics[width=\linewidth,height=6.5cm,keepaspectratio]{ALL IMGS/dataset 1 traning and val.jpg}
+  \includegraphics[width=\linewidth,height=6.5cm,keepaspectratio]{figs/fig10_training_curves_d1.png}
   % \caption{Training progress for Dataset-1: from left accuracy value during training and validation process also with loss value during training and validation process}
   \caption{Training progress of CovBI-GRU on Dataset-1 (original notebook, image-level split): loss (left) and accuracy (right) during training and validation.}
   \label{fig:train_dataset1}
@@ -683,7 +684,8 @@ Metrics & Tumor Class & TP & TN & FP & FN & Accuracy & Precision & Recall & FPR 
 \centering
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{ALL IMGS/dataset 1 confution.jpg}
+    % \includegraphics[width=\linewidth]{ALL IMGS/dataset 1 confution.jpg}  % Original notebook figure
+    \fbox{\parbox{0.9\linewidth}{\centering\small Dataset-1 confusion matrix from original CovBI-GRU notebook (image-level split). See supplementary notebook for figure.}}
     \caption{Confusion matrix for Dataset-1 (\texttt{.mat} format, Figshare; image-level split)}
     \label{fig:cm_dataset1}
 \end{subfigure}
