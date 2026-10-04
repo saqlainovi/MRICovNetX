@@ -1,4 +1,4 @@
-﻿\documentclass[a4paper,fleqn]{cas-sc}
+\documentclass[a4paper,fleqn]{cas-sc}
         \usepackage[numbers,sort&compress]{natbib}
         \usepackage{graphicx}
         \usepackage{multirow}
@@ -215,7 +215,7 @@ The experimental validation of MRICovNetX was conducted using four publicly avai
 \textbf{Dataset-4 (Mendeley Bangladeshi Data)}~\cite{R58} is a specialized brain tumor MRI dataset sourced exclusively from real-world Bangladeshi patients. It comprises 6,056 T1-weighted MRI images in \texttt{.jpg} format, systematically categorized into three distinct classes: Brain\_Glioma (2,004), Brain\_Menin (2,004), and Brain Tumor (2,048). Each image in the dataset has been meticulously collected from various hospitals across Bangladesh, ensuring a diverse and representative sample, and images are uniformly resized to $512 \times 512$ pixels to facilitate compatibility. This dataset provides a near-balanced class distribution and serves as an additional benchmark to validate the generalizability of the CovNet22 model on unseen data from an independent source.
 
 \paragraph{Clinical Label Mapping and Sequence Characterization for Dataset-4}
-In the Mendeley repository, class folders are labeled as \texttt{Brain\_Glioma}, \texttt{Brain\_Menin}, and \texttt{Brain Tumor}. In consultation with clinical neuroradiologists and based on original dataset annotations~\cite{R58}, \texttt{Brain\_Glioma} corresponds to intra-axial Gliomas, \texttt{Brain\_Menin} corresponds to extra-axial Meningiomas, and \texttt{Brain Tumor} exclusively denotes benign Pituitary Adenomas originating from the sellar region. Images were acquired using 1.5 Tesla clinical MRI scanners with standard contrast-enhanced T1-weighted axial protocols across institutional diagnostic centers in Bangladesh under local clinical research compliance. This mapping establishes a consistent 3-tumor taxonomy with Dataset-1.
+In the Mendeley repository, class folders are labeled as \texttt{Brain\_Glioma}, \texttt{Brain\_Menin}, and \texttt{Brain Tumor}. Based on the original dataset annotations~\cite{R58}, \texttt{Brain\_Glioma} corresponds to Gliomas, \texttt{Brain\_Menin} corresponds to Meningiomas, and \texttt{Brain Tumor} denotes Pituitary Adenomas. This mapping establishes a consistent 3-tumor taxonomy with Dataset-1.
 
 All datasets contain images in different anatomical views and imaging conditions, making them suitable for testing model adaptability and robustness. The class distributions across all four datasets are visualized in Figure~\ref{fig:dataset12_distribution} (Dataset-1 and Dataset-2) and Figure~\ref{fig:dataset34_distribution} (Dataset-3 and Dataset-4), which vary in balance and sample sizes, making them suitable for comprehensive model evaluation.
 
