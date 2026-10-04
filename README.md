@@ -11,97 +11,78 @@ Official repository for the revised manuscript:
 
 ## 📌 Overview
 
-Clinical magnetic resonance imaging (MRI) archives frequently store heterogeneous data formats ranging from raw volumetric numerical matrices (`.mat`) to standard compressed photographic images (`.jpg`). Existing deep learning diagnostic systems typically force heterogeneous inputs into a single rigid pipeline, resulting in interpolation artifacts, channel distortion, and loss of volumetric slice metadata.
+Clinical MRI archives frequently store heterogeneous data formats — raw volumetric matrices (`.mat`) and standard compressed images (`.jpg`). Most existing DL diagnostic systems force all inputs through a single rigid pipeline, causing interpolation artifacts and loss of metadata.
 
-**MRICovNetX** introduces a multi-format dual-branch framework designed to address heterogeneous MRI data natively:
+**MRICovNetX** introduces a multi-format dual-branch framework that handles heterogeneous MRI data natively:
 
 1. **CovBI-GRU Branch (`.mat` format):**  
-   A hybrid architecture combining 1D convolutional layers with bidirectional gated recurrent units (Bi-GRU) tailored for sequential axial slice representations. Evaluated under strict **patient-level group splitting** (`cjdata/PID`) with zero inter-patient data leakage.
+   A hybrid Conv1D + Bidirectional GRU architecture for sequential axial slice representations. Evaluated under strict **patient-level group splitting** with zero inter-patient leakage.
 2. **CovNet22 Branch (`.jpg` format):**  
-   An ultra-lightweight 22-layer convolutional network (1.45M parameters) optimized for edge deployment, trained from scratch on brain MRI without relying on ImageNet natural-image pretraining.
+   An ultra-lightweight 22-layer CNN (1.45M parameters) trained from scratch, with validation-based early stopping and learning-rate scheduling. All results report mean ± SD over 3 independent seeds.
 3. **Comprehensive Explainable AI (XAI) Suite:**  
-   Combines Grad-CAM++, skull-stripping, hemisphere-gated deep-core focusing, and LIME superpixel explanations with quantitative ground-truth mask evaluation (Energy-Based Pointing Game and IoU).
-
-```
-                            ┌────────────────────────────────────────┐
-                            │        Heterogeneous MRI Inputs        │
-                            └───────────────────┬────────────────────┘
-                                                │
-                       ┌────────────────────────┴────────────────────────┐
-                       ▼                                                 ▼
-        ┌──────────────────────────────┐                 ┌──────────────────────────────┐
-        │   Volumetric .mat Arrays     │                 │      Standard .jpg Slices     │
-        │   (Dataset-1: Figshare)      │                 │  (Dataset-2, 3, 4 Benchmarks)│
-        └──────────────┬───────────────┘                 └──────────────┬───────────────┘
-                       │                                                 │
-                       ▼                                                 ▼
-        ┌──────────────────────────────┐                 ┌──────────────────────────────┐
-        │       CovBI-GRU Branch       │                 │       CovNet22 Branch        │
-        │ • 1D-CNN Feature Extractor   │                 │ • 5x Conv2D Feature Blocks   │
-        │ • Bidirectional GRU Slices   │                 │ • 1.45M Trainable Parameters │
-        │ • Patient-Level Group Split  │                 │ • Trained From Scratch       │
-        └──────────────┬───────────────┘                 └──────────────┬───────────────┘
-                       │                                                 │
-                       ▼                                                 ▼
-        ┌──────────────────────────────┐                 ┌──────────────────────────────┐
-        │ Acc: 82.73 ± 0.51% (Patient) │                 │ Acc: 93.87% - 98.83% (3-Seed)│
-        └──────────────┬───────────────┘                 └──────────────┬───────────────┘
-                       │                                                 │
-                       └────────────────────────┬────────────────────────┘
-                                                ▼
-                            ┌────────────────────────────────────────┐
-                            │    Explainable AI (XAI) Verification   │
-                            │  Grad-CAM++ | EBPG / IoU | LIME Maps   │
-                            └────────────────────────────────────────┘
-```
+   Grad-CAM++, hemisphere-gated deep-core focusing, and LIME superpixel explanations with quantitative evaluation (EBPG, IoU).
 
 ---
 
 ## 📊 Benchmark Results
 
-### 1. Multi-Seed Replication Across All Four Datasets
+### Definitive Multi-Seed Results
 
-All evaluations report Mean $\pm$ Standard Deviation and 95% Confidence Intervals across three independent random seeds (`seed=42, 123, 2024`):
+All CovNet22 evaluations: PyTorch, 3 seeds (42/123/2024), validation-based early stopping (patience 7), max 60 epochs, checkpoint on best validation loss.
 
-| Dataset | Format | Classes | Samples | Splitting Protocol | Test Accuracy (%) | 95% CI | Macro F1 (%) |
-|---|---|---|---|---|---|---|---|
-| **Dataset-1 (Figshare)** | `.mat` | 3 (Meningioma, Glioma, Pituitary) | 3,064 | **Patient-Level (GroupShuffleSplit)** | **82.73 $\pm$ 0.51** | [82.15, 83.30] | 82.35 $\pm$ 0.62 |
-| **Dataset-2 (Kaggle)** | `.jpg` | 4 (+ No Tumor) | 3,264 | 80/20 Stratified Split | **93.87 $\pm$ 0.93** | [92.82, 94.93] | 93.94 $\pm$ 0.80 |
-| **Dataset-3 (Nickparvar)**| `.jpg` | 4 (+ No Tumor) | 7,023 | Canonical Split (5,712 / 1,311) | **98.83 $\pm$ 0.04** | [98.78, 98.88] | 98.75 $\pm$ 0.05 |
-| **Dataset-4 (Mendeley)** | `.jpg` | 3 (Glioma, Menin, Pituitary) | 6,056 | 85/15 Stratified Split | **98.02 $\pm$ 0.43** | [97.53, 98.50] | 98.01 $\pm$ 0.42 |
-
-> **Note on Patient-Level Splitting:** Under random slice-level splitting, Dataset-1 achieves 98.03% accuracy. However, patient-aware splitting reveals a clinical generalization accuracy of 82.73 $\pm$ 0.51%, confirming the critical importance of preventing slice leakage across identical patients.
-
----
-
-### 2. Comparison Against Modern CNNs and Vision Transformers (Dataset-3)
-
-Evaluated under identical data partitions, input dimensions ($224 \times 224$), and evaluation metrics:
-
-| Model Architecture | Paradigm | Params (M) | Test Accuracy (%) | Macro F1 (%) | Inference Latency (ms) | Training Time (s) |
+| Dataset | Format | Classes | Test Accuracy (%) | 95% CI | AUC | Macro F1 (%) |
 |---|---|---|---|---|---|---|
-| ResNet-50 | CNN (Pretrained) | 23.52 | 98.63 | 98.63 | 0.3 | 395.7 |
-| EfficientNet-B0 | CNN (Pretrained) | 4.01 | 99.39 | 99.34 | 0.4 | 268.4 |
-| MobileNetV2 | CNN (Pretrained) | 2.23 | 99.31 | 99.27 | 0.2 | 220.3 |
-| DenseNet-121 | CNN (Pretrained) | 6.96 | 99.01 | 98.93 | 0.7 | 458.2 |
-| VGG-16 | CNN (Pretrained) | 134.28 | 96.64 | 96.52 | 1.4 | 8,031.4 |
-| Swin-Tiny | Vision Transformer | 27.52 | 98.63 $\pm$ 0.73 | 98.53 $\pm$ 0.79 | 0.9 | 644.3 |
-| ViT-B/16 | Vision Transformer | 85.80 | 96.26 $\pm$ 2.63 | 96.01 $\pm$ 2.84 | 0.4 | 1,255.1 |
-| **CovNet22 (Ours)** | **CNN (From Scratch)** | **1.45** | **98.83 $\pm$ 0.04** | **98.75 $\pm$ 0.05** | **14.2** | **380.0** |
+| **D1 (Figshare)** | `.mat` | 3 | **82.73 ± 0.62** | [82.02, 83.43] | — | 82.35 ± 0.62 |
+| **D2 (Kaggle, de-dup)** | `.jpg` | 4 | **90.99 ± 1.06** | [89.79, 92.19] | 0.985 | 90.31 ± 1.10 |
+| **D3 (Nickparvar)** | `.jpg` | 4 | **99.08 ± 0.28** | [98.77, 99.40] | 0.9998 | 99.04 ± 0.28 |
+| **D4 (Mendeley)** | `.jpg` | 3 | **98.61 ± 0.44** | [98.10, 99.11] | 0.9996 | 98.60 ± 0.44 |
 
-*CovNet22 achieves competitive performance while requiring $16.2\times$ fewer parameters than ResNet-50, $19.0\times$ fewer than Swin-Tiny, and $59.2\times$ fewer than ViT-B/16, without any external pretraining weights.*
+> **Dataset-2 Duplicate Audit:** The canonical Kaggle split has 257/394 (65.2%) test images that are exact pHash duplicates of training images, inflating reported accuracy to 77.58%. Our de-duplicated 80/20 stratified split removes this leakage, yielding the reported 90.99%.
+
+> **Patient-Level Splitting (D1):** Under random slice-level splitting, D1 achieves 98.03%. Patient-aware splitting reveals a clinical generalization accuracy of 82.73 ± 0.62%, confirming the critical importance of preventing slice leakage.
 
 ---
 
-### 3. CovBI-GRU Component Ablation Study (Dataset-1, Patient-Level Split)
+### Modern Baseline Comparison (Dataset-3)
 
-| Configuration | Test Accuracy (%) | 95% CI | Precision (%) | Recall (%) | F1-Score (%) |
-|---|---|---|---|---|---|
-| **Full CovBI-GRU (Proposed)** | **82.73 $\pm$ 0.51** | **[82.15, 83.30]** | 81.26 | 84.77 | **82.35 $\pm$ 0.62** |
-| w/o Bi-GRU (Conv1D Only) | 82.73 $\pm$ 0.42 | [82.25, 83.21] | 81.73 | 85.23 | 82.76 $\pm$ 0.65 |
-| w/o Conv1D (Bi-GRU Only) | 84.28 $\pm$ 0.79 | [83.39, 85.17] | 82.84 | 86.82 | 84.19 $\pm$ 0.66 |
-| w/o Batch Normalization | 81.35 $\pm$ 0.65 | [80.62, 82.08] | 80.17 | 83.34 | 80.97 $\pm$ 0.73 |
-| w/o Dropout Regularization | 82.44 $\pm$ 0.41 | [81.98, 82.90] | 81.18 | 84.56 | 82.27 $\pm$ 0.36 |
+Unified latency benchmark: batch size 1, FP32, NVIDIA RTX 3060, 50 warmup + 5×200 timed passes.
+
+| Model | Params (M) | Test Acc (%) | Inference Latency (ms) |
+|---|---|---|---|
+| ResNet-50 | 23.52 | 98.63 | 10.93 |
+| EfficientNet-B0 | 4.01 | 99.39 | 10.35 |
+| MobileNetV2 | 2.23 | 99.31 | 6.78 |
+| DenseNet-121 | 6.96 | 99.01 | 20.00 |
+| VGG-16 | 134.28 | 96.64 | 7.15 |
+| Swin-Tiny | 27.52 | 98.63 ± 0.73 | 14.46 |
+| ViT-B/16 | 85.80 | 96.26 ± 2.63 | 10.13 |
+| **CovNet22 (Ours)** | **1.45** | **99.08 ± 0.28** | **1.14** |
+
+*CovNet22: 16× smaller than ResNet-50, 59× smaller than ViT-B/16, with ~1.1 ms inference and 2,908 img/s throughput.*
+
+---
+
+### CovBI-GRU Ablation (Dataset-1, Patient-Level Split)
+
+| Configuration | Accuracy (%) | 95% CI | F1 (%) |
+|---|---|---|---|
+| **Full CovBI-GRU** | **82.73 ± 0.62** | [82.02, 83.43] | **82.35 ± 0.62** |
+| w/o Bi-GRU (Conv1D Only) | 82.73 ± 0.42 | [82.25, 83.21] | 82.76 ± 0.65 |
+| w/o Conv1D (Bi-GRU Only) | 84.28 ± 0.79 | [83.39, 85.17] | 84.19 ± 0.66 |
+| w/o Batch Normalization | 81.35 ± 0.65 | [80.62, 82.08] | 80.97 ± 0.73 |
+| w/o Dropout | 82.44 ± 0.41 | [81.98, 82.90] | 82.27 ± 0.36 |
+
+---
+
+### CovNet22 Ablation (Dataset-3, 3-Seed)
+
+| Variant | Params | Accuracy (%) | 95% CI |
+|---|---|---|---|
+| **Full CovNet22** | 1.45M | **99.08 ± 0.28** | [98.77, 99.40] |
+| No Augmentation | 1.45M | 97.46 ± 0.91 | — |
+| No BatchNorm | 1.45M | 97.64 ± 0.28 | — |
+| Shallow (3 blocks) | 0.42M | 98.12 ± 0.55 | — |
+| No Dropout | 1.45M | 98.63 ± 0.68 | — |
 
 ---
 
@@ -110,99 +91,78 @@ Evaluated under identical data partitions, input dimensions ($224 \times 224$), 
 ```
 MRICovNetX-Framework/
 │
-├── notebooks/                       # Interactive Jupyter Notebook implementations
+├── notebooks/                          # Original Jupyter Notebook implementations
 │   ├── Brain_Tumor(Dataset_4 with_xai).ipynb
 │   ├── Copy_of_CovBi_GRU_(Dataset_1)_.ipynb
 │   ├── Copy_of_CovNet_(Dataset_2).ipynb
 │   └── CovNet_(Datase_3)(with_xai).ipynb
 │
-├── scripts/                         # Standalone modular experimental pipelines
-│   ├── 01_run_dedup_check.py        # Perceptual hashing cross-dataset deduplication
-│   ├── 02_run_failure_analysis.py   # Radiologically validated failure case analysis
-│   ├── 03_run_patient_split_and_ablation.py # CovBI-GRU patient-level split & ablation
-│   ├── 04_run_baseline_comparison.py# ResNet-50, MobileNet, EfficientNet, DenseNet, VGG
-│   ├── 05_covnet22_3seed_d2d3d4.py  # 3-seed multi-run benchmark for Datasets 2, 3, 4
-│   ├── 05_run_d2_pooled.py          # Dataset-2 pooled 80/20 replication
-│   ├── 06_transformer_baselines.py  # Swin-Tiny & ViT-B/16 Vision Transformer baselines
-│   ├── fix1_ablation_3seeds.py      # Statistical CI ablation generator
-│   ├── fix2_xai_2d_gradcam.py       # Grad-CAM++ & LIME visualization generator
-│   └── fix2_xai_resnet50_gradcam.py # Quantitative XAI (EBPG / IoU / Pointing Game)
+├── scripts/                            # Reproducible PyTorch evaluation scripts
+│   ├── 01_run_dedup_check.py           # pHash cross-dataset deduplication
+│   ├── 02_run_failure_analysis.py      # Failure case analysis
+│   ├── 03_run_patient_split_and_ablation.py  # CovBI-GRU patient-level split
+│   ├── 04_run_baseline_comparison.py   # CNN baselines (ResNet, EfficientNet, etc.)
+│   ├── 05_covnet22_3seed_d2d3d4.py     # Early 3-seed benchmark
+│   ├── 05_run_d2_pooled.py             # Dataset-2 pooled replication
+│   ├── 06_transformer_baselines.py     # Swin-Tiny & ViT-B/16 baselines
+│   ├── 07_definitive_covnet22_eval.py  # ⭐ Definitive evaluation (3-seed, ES/LR)
+│   ├── 08_latency_benchmark.py         # Unified latency benchmark (all models)
+│   ├── 09_make_figures_v2.py           # Publication-quality figures
+│   ├── 10_xai_v2.py                    # Grad-CAM++, LIME visualizations
+│   ├── fix1_ablation_3seeds.py         # CovBI-GRU 3-seed ablation
+│   ├── fix2_xai_2d_gradcam.py          # XAI visualization
+│   └── fix2_xai_resnet50_gradcam.py    # Quantitative XAI (EBPG/IoU)
 │
-├── results/                         # Raw machine-readable benchmark CSVs
-│   ├── covbigru_ablation_3seeds.csv
-│   ├── covnet22_3seed_all_datasets.csv
-│   ├── covnet22_3seed_summary.csv
-│   ├── modern_baselines_comparison.csv
-│   ├── transformer_baselines_3seed.csv
-│   ├── dataset_dedup_report.csv
-│   ├── patient_level_split_summary.csv
-│   └── quantitative_xai_resnet50_energy.csv
+├── results/                            # Raw experiment CSVs
+│   └── v2/                             # Definitive evaluation results
+│       ├── covnet22_definitive_per_seed.csv
+│       ├── covnet22_definitive_summary.csv
+│       ├── covnet22_ablation_d3_per_seed.csv
+│       ├── covnet22_ablation_d3_summary.csv
+│       ├── covbigru_ablation_3seeds_sampleSD.csv
+│       └── latency_benchmark.csv
 │
-├── paper/                           # LaTeX manuscript sources
+├── paper/                              # LaTeX manuscript
 │   ├── mricovnetx_elsevier_balanced_sc.tex
 │   └── sn-bibliography.bib
 │
-├── docs/                            # Peer-review & Rebuttal documentation
-│   ├── response_to_reviewers.md     # Comprehensive 4-reviewer revision response
-│   ├── brutally_honest_paper_review.md
-│   └── resubmission_readiness_report.md
+├── docs/
+│   └── response_to_reviewers.md
 │
-├── requirements.txt                 # Python environment dependencies
-├── LICENSE                          # MIT Open-Source License
-└── README.md                        # Documentation & reproduction guide
+├── requirements.txt
+├── LICENSE
+└── README.md
 ```
 
 ---
 
-## 🚀 Quick Start & Installation
+## 🚀 Quick Start
 
-### 1. Clone the Repository
+### 1. Clone & Setup
 ```bash
-git clone https://github.com/saqlainovi/MRICovNetX-Framework.git
-cd MRICovNetX-Framework
-```
-
-### 2. Set Up Virtual Environment
-```bash
+git clone https://github.com/saqlainovi/MRICovNetX.git
+cd MRICovNetX
 python -m venv venv
-# On Windows:
-venv\Scripts\activate
-# On Linux/macOS:
-source venv/bin/activate
-
-pip install --upgrade pip
+# Windows: venv\Scripts\activate
+# Linux/macOS: source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
-
-## 🔬 Reproducing Experiments
-
-### Run Cross-Dataset Deduplication (pHash)
+### 2. Reproduce Definitive Results
 ```bash
-python scripts/01_run_dedup_check.py
-```
+# Run the definitive CovNet22 evaluation (3 seeds, D2/D3/D4)
+python scripts/07_definitive_covnet22_eval.py
 
-### Run CovBI-GRU Patient-Level Split & Ablation
-```bash
-python scripts/03_run_patient_split_and_ablation.py
-```
+# Run CovBI-GRU patient-level ablation (3 seeds, D1)
+python scripts/fix1_ablation_3seeds.py
 
-### Run CovNet22 3-Seed Replication
-```bash
-python scripts/05_covnet22_3seed_d2d3d4.py
-```
-
-### Run Vision Transformer Baselines (Swin-Tiny & ViT-B/16)
-```bash
-python scripts/06_transformer_baselines.py
+# Run unified latency benchmark
+python scripts/08_latency_benchmark.py
 ```
 
 ---
 
 ## 📜 Citation
-
-If you use MRICovNetX or reference these benchmarks in your research, please cite:
 
 ```bibtex
 @article{mricovnetx2026,
@@ -216,4 +176,4 @@ If you use MRICovNetX or reference these benchmarks in your research, please cit
 ---
 
 ## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.

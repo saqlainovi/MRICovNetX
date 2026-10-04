@@ -1,0 +1,9 @@
+model,params_M,latency_bs1_ms_mean,latency_bs1_ms_sd,throughput_bs32_img_s,gradcampp_ms_mean,gradcampp_ms_sd
+CovNet22,1.45,1.142,0.01,2907.5,2.415,0.352
+ResNet-50,23.52,10.934,0.729,459.1,,
+EfficientNet-B0,4.01,10.347,0.679,985.2,,
+MobileNetV2,2.23,6.779,0.154,1221.9,,
+DenseNet-121,6.96,20.002,0.963,386.9,,
+VGG-16,134.28,7.154,0.05,244.8,,
+Swin-T,27.52,14.457,0.57,300.7,,
+ViT-B/16,85.8,10.132,0.156,129.4,,

@@ -1,0 +1,6 @@
+﻿configuration,acc_mean,acc_sd_sample,ci95_low,ci95_high,acc_sd_population_as_originally_reported,precision_mean,recall_mean,f1_mean,per_seed_correct_of_579
+Full CovBI-GRU,82.73,0.62,82.02,83.43,0.51,81.26,84.77,82.35,475/480/482 or 476/478/483
+w/o Bi-GRU (Conv1D only),82.73,0.52,82.14,83.32,0.42,81.73,85.23,82.76,476/479/482
+w/o Conv1D (Bi-GRU only),84.28,0.96,83.20,85.37,0.79,82.84,86.82,84.19,482/489/493 or 483/487/494
+w/o Batch Normalization,81.35,0.79,80.45,82.24,0.65,80.17,83.34,80.97,466/472/475 or 467/470/476
+w/o Dropout,82.44,0.50,81.88,83.01,0.41,81.18,84.56,82.27,474/479/479
