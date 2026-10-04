@@ -114,6 +114,9 @@ This study introduces \textbf{MRICovNetX}, a novel deep learning framework for c
     \item \textbf{CovNet22}: A CNN-based architecture designed for \texttt{.jpg} image datasets. This model is evaluated using three datasets: Dataset-2 (3,264 images), Dataset-3 (7,023 images), and Dataset-4 (6,056 images). The architecture includes five Conv2D layers, a flattened layer, two dense layers with softmax activation, and dropout for regularization.
 \end{itemize}
 
+\paragraph{Rationale for a Dual-Branch Design.}
+A natural question is why MRICovNetX employs two separate architectures rather than a single unified model. The reason is fundamentally architectural: \texttt{.mat} data arrive as 512$\times$512 floating-point matrices representing raw slice intensities, which are most naturally modelled as 1-D sequential feature vectors amenable to recurrent processing. In contrast, \texttt{.jpg} images are 8-bit three-channel RGB arrays best processed by 2-D convolutional feature extractors. Forcing both formats through the same network would require either (i) discarding the sequential slice structure of \texttt{.mat} data by reshaping it into a pseudo-image, or (ii) inflating the 2-D image pathway with recurrent layers that add unnecessary parameters and latency when processing standard photographs. By dedicating CovBI-GRU to the sequential \texttt{.mat} pathway and CovNet22 to the spatial \texttt{.jpg} pathway, each branch can be independently optimised for its input modality while remaining lightweight (both under 1.5M parameters). In clinical practice, the routing decision is trivial: a \texttt{.mat}/HDF5 file is directed to CovBI-GRU; a \texttt{.jpg}/\texttt{.png} image is directed to CovNet22.
+
 MRICovNetX leverages variable kernel sizes in CovBI-GRU and consistent kernel sizes in CovNet22 to extract complex and robust features from MRI images. Experimental results show that under strict patient-level splitting to prevent anatomical data leakage, CovBI-GRU achieves 82.73 $\pm$ 0.62\% classification accuracy on Dataset-1 (compared to 98.03\% under image-level random split), while CovNet22 attains 90.99 $\pm$ 1.06\% on a de-duplicated split of Dataset-2, 99.08 $\pm$ 0.28\% on Dataset-3, and 98.61 $\pm$ 0.44\% on Dataset-4 across three independent random seeds. A within-dataset duplicate audit further shows that the official Dataset-2 test split is dominated by exact copies of training images, so accuracies obtained on that split substantially overestimate generalization. These results are competitive with existing methods while being obtained under a transparent, leakage-controlled evaluation protocol. While this study focuses on glioma, meningioma, and pituitary tumor classification, Dataset-2 and Dataset-3 also include a no-tumor class; future work will aim to expand classification capabilities to additional tumor types.
 \begin{figure}[!htbp]
 \centering
@@ -262,7 +265,7 @@ Dataset-1 (Figshare) provides patient identifiers (\texttt{cjdata/PID}) embedded
 \hline
 \textbf{Split Protocol} & \textbf{Train (Patients/Images)} & \textbf{Test (Patients/Images)} & \textbf{Accuracy (\%)} & \textbf{F1} \\
 \hline\hline
-Image-Level Random & N/A / 2,451 & N/A / 613 & 98.03 & 0.980 \\
+Image-Level Random & N/A / 2,454 & N/A / 610 & 98.03 & 0.980 \\
 \textbf{Patient-Level Group} & \textbf{185 / 2,470} & \textbf{47 / 579} & \textbf{82.73 $\pm$ 0.62} & \textbf{0.824} \\
 \hline
 \end{tabular}
@@ -470,9 +473,8 @@ ReLU activation is applied after each convolutional layer to address the vanishi
 \centering
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    % \includegraphics[width=\linewidth]{ALL IMGS/again/dataset 1.pdf}  % Original notebook figure â€” see Dataset-1 notebook for reproduction
-    \fbox{\parbox{0.9\linewidth}{\centering\small Dataset-1 class distribution from original CovBI-GRU notebook (image-level split). See supplementary notebook for figure.}}
-    \caption{Dataset-1 (image-level split of the original notebook): 613 of 3,064 \texttt{.mat} test samples — meningioma (23.11\%), glioma (45.74\%), pituitary (31.15\%).}
+    \includegraphics[width=\linewidth]{figs/dist_d1.pdf}
+    \caption{Dataset-1 (image-level split of the original notebook): 610 of 3,064 \texttt{.mat} test samples — meningioma (23.11\%), glioma (45.74\%), pituitary (31.15\%).}
     \label{fig:dataset1_distribution}
 \end{subfigure}
 \hfill
@@ -684,8 +686,7 @@ Metrics & Tumor Class & TP & TN & FP & FN & Accuracy & Precision & Recall & FPR 
 \centering
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    % \includegraphics[width=\linewidth]{ALL IMGS/dataset 1 confution.jpg}  % Original notebook figure
-    \fbox{\parbox{0.9\linewidth}{\centering\small Dataset-1 confusion matrix from original CovBI-GRU notebook (image-level split). See supplementary notebook for figure.}}
+    \includegraphics[width=\linewidth]{figs/cm_d1.pdf}
     \caption{Confusion matrix for Dataset-1 (\texttt{.mat} format, Figshare; image-level split)}
     \label{fig:cm_dataset1}
 \end{subfigure}
