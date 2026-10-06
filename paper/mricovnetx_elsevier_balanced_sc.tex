@@ -12,7 +12,7 @@
         \usepackage{subcaption}
         \usepackage{url}
         \usepackage{float}
-        \usepackage[section]{placeins}
+        \usepackage{placeins}
         \def\UrlBreaks{\do\/\do-\do\_\do\=\do\&\do\?\do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z\do\0\do\1\do\2\do\3\do\4\do\5\do\6\do\7\do\8\do\9}
 
         \begin{document}
@@ -473,18 +473,18 @@ ReLU activation is applied after each convolutional layer to address the vanishi
     \label{eq:softmax}
 \end{equation}
 
-\begin{figure}[!htbp]
+\begin{figure}[!t]
 \centering
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{figs/dist_d1.pdf}
+    \includegraphics[width=0.88\linewidth]{figs/dist_d1.pdf}
     \caption{Dataset-1 (image-level split of the original notebook): 610 of 3,064 \texttt{.mat} test samples — meningioma (23.11\%), glioma (45.74\%), pituitary (31.15\%).}
     \label{fig:dataset1_distribution}
 \end{subfigure}
 \hfill
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{figs/v2/dist_2.pdf}
+    \includegraphics[width=0.88\linewidth]{figs/v2/dist_2.pdf}
     \caption{Dataset-2 (de-duplicated test split): 566 \texttt{.jpg} samples --- glioma (31.10\%), meningioma (28.80\%), no tumor (10.95\%), pituitary (29.15\%).}
     \label{fig:dataset2_distribution}
 \end{subfigure}
@@ -503,18 +503,18 @@ After the convolutional stack, the feature maps are flattened and passed through
 
 To rigorously evaluate the generalization capability of MRICovNetX, Dataset-3 was partitioned into 5,712 training and 1,311 testing images following the provider's canonical split. This dataset integrates samples from various acquisition protocols and institutions, introducing significant diversity in image properties, including resolution, noise, and anatomical views. Despite these variations, the model achieved 99.08 $\pm$ 0.28\% accuracy across three seeds (98.83 $\pm$ 0.29\% on the 881 test images that have no duplicate in the training partition; Section~\ref{sec:dup_audit}). The original experiments were prototyped in TensorFlow/Keras notebooks; all CovNet22 results reported here were regenerated with the PyTorch implementation described in Section~\ref{sec:dup_audit}. Code and dataset links are publicly accessible as described in~\cite{R53}.
 
-\begin{figure}[!htbp]
+\begin{figure}[!t]
 \centering
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{figs/v2/dist_3.pdf}
+    \includegraphics[width=0.88\linewidth]{figs/v2/dist_3.pdf}
     \caption{Dataset-3 (official test set): 1,311 \texttt{.jpg} samples --- glioma (22.88\%), meningioma (23.34\%), no tumor (30.89\%), pituitary (22.88\%).}
     \label{fig:dataset3_distribution}
 \end{subfigure}
 \hfill
 \begin{subfigure}[t]{0.48\linewidth}
     \centering
-    \includegraphics[width=\linewidth]{figs/v2/dist_4.pdf}
+    \includegraphics[width=0.88\linewidth]{figs/v2/dist_4.pdf}
     
     \caption{Dataset-4 (Test Set): 909 \texttt{.jpg} samples — Brain\_Glioma (33.11\%), Brain\_Menin (33.11\%), Brain Tumor (33.77\%).}
     \label{fig:dataset4_distribution}
