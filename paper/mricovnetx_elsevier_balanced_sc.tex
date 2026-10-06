@@ -8,6 +8,7 @@
         \usepackage{algorithmicx}
         \usepackage{algpseudocode}
         \usepackage{listings}
+        \usepackage{caption}
         \usepackage{subcaption}
         \usepackage{url}
         \usepackage{float}
@@ -114,17 +115,19 @@ This study introduces \textbf{MRICovNetX}, a novel deep learning framework for c
     \item \textbf{CovNet22}: A CNN-based architecture designed for \texttt{.jpg} image datasets. This model is evaluated using three datasets: Dataset-2 (3,264 images), Dataset-3 (7,023 images), and Dataset-4 (6,056 images). The architecture includes five Conv2D layers, a flattened layer, two dense layers with softmax activation, and dropout for regularization.
 \end{itemize}
 
-\begin{figure}[!hb]
-\centering
-    \includegraphics[width=0.70\linewidth]{figs/mricovnetx_pipeline_diagram_v2.jpg}
-    \caption{End-to-end pipeline of the MRICovNetX framework. The six-stage workflow comprises: (1) multi-source data acquisition from four public datasets, (2) format-specific preprocessing with normalization and augmentation, (3) model selection routing \texttt{.mat} data to CovBI-GRU and \texttt{.jpg} images to CovNet22, (4) deep feature extraction through convolutional and recurrent layers, (5) SoftMax-based multi-class classification, and (6) Grad-CAM++ explainability for clinical interpretability.}
-    \label{fig:mricovnetx_framework}
-\end{figure}
-
 \paragraph{Rationale for a Dual-Branch Design.}
 A natural question is why MRICovNetX employs two separate architectures rather than a single unified model. The reason is fundamentally architectural: \texttt{.mat} data arrive as 512$\times$512 floating-point matrices representing raw slice intensities, which are most naturally modelled as 1-D sequential feature vectors amenable to recurrent processing. In contrast, \texttt{.jpg} images are 8-bit three-channel RGB arrays best processed by 2-D convolutional feature extractors. Forcing both formats through the same network would require either (i) discarding the sequential slice structure of \texttt{.mat} data by reshaping it into a pseudo-image, or (ii) inflating the 2-D image pathway with recurrent layers that add unnecessary parameters and latency when processing standard photographs. By dedicating CovBI-GRU to the sequential \texttt{.mat} pathway and CovNet22 to the spatial \texttt{.jpg} pathway, each branch can be independently optimised for its input modality while remaining lightweight (both under 1.5M parameters). In clinical practice, the routing decision is trivial: a \texttt{.mat}/HDF5 file is directed to CovBI-GRU; a \texttt{.jpg}/\texttt{.png} image is directed to CovNet22.
 
 MRICovNetX leverages variable kernel sizes in CovBI-GRU and consistent kernel sizes in CovNet22 to extract complex and robust features from MRI images. Experimental results show that under strict patient-level splitting to prevent anatomical data leakage, CovBI-GRU achieves 82.73 $\pm$ 0.62\% classification accuracy on Dataset-1 (compared to 98.03\% under image-level random split), while CovNet22 attains 90.99 $\pm$ 1.06\% on a de-duplicated split of Dataset-2, 99.08 $\pm$ 0.28\% on Dataset-3, and 98.61 $\pm$ 0.44\% on Dataset-4 across three independent random seeds. A within-dataset duplicate audit further shows that the official Dataset-2 test split is dominated by exact copies of training images, so accuracies obtained on that split substantially overestimate generalization. These results are competitive with existing methods while being obtained under a transparent, leakage-controlled evaluation protocol. While this study focuses on glioma, meningioma, and pituitary tumor classification, Dataset-2 and Dataset-3 also include a no-tumor class; future work will aim to expand classification capabilities to additional tumor types.
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\centering
+    \includegraphics[width=0.68\linewidth]{figs/mricovnetx_pipeline_diagram_v2.jpg}
+    \captionof{figure}{End-to-end pipeline of the MRICovNetX framework. The six-stage workflow comprises: (1) multi-source data acquisition from four public datasets, (2) format-specific preprocessing with normalization and augmentation, (3) model selection routing \texttt{.mat} data to CovBI-GRU and \texttt{.jpg} images to CovNet22, (4) deep feature extraction through convolutional and recurrent layers, (5) SoftMax-based multi-class classification, and (6) Grad-CAM++ explainability for clinical interpretability.}
+    \label{fig:mricovnetx_framework}
+\end{minipage}
+\end{center}
 
 
 \section{Related Works}\label{sec2}
